@@ -1,0 +1,5 @@
+import Link from "next/link";
+import { Container } from "@/components/ui/Container";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { INSIGHTS } from "@/lib/data/insights";
+export function InsightsTeaser(){const featured=INSIGHTS.slice(0,3);return <section className="py-24 md:py-32 bg-offwhite"><Container><div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6"><SectionHeader eyebrow="Insights" title="Practical perspectives from the work we do"/><Link href="/insights" className="text-nav underline underline-offset-4">View all insights</Link></div><div className="grid md:grid-cols-3 gap-6 mt-16">{featured.map(a=><Link href={`/insights/${a.slug}`} key={a.slug} className="bg-white border border-mist p-8 min-h-[230px] hover:border-deep-blue transition-colors"><span className="text-xs uppercase tracking-[0.16em] text-electric">{a.cat}</span><h3 className="text-xl text-navy mt-10 leading-snug">{a.title}</h3><span className="inline-block mt-8 text-sm underline underline-offset-4">Read perspective</span></Link>)}</div></Container></section>}

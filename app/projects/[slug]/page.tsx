@@ -1,0 +1,10 @@
+import { notFound } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
+import { Container } from "@/components/ui/Container";
+import { PROJECTS } from "@/lib/data/projects";
+export function generateStaticParams(){return PROJECTS.map(p=>({slug:p.slug}));}
+export async function generateMetadata({params}:{params:{slug:string}}){const p=PROJECTS.find(x=>x.slug===params.slug);if(!p)return{};return{title:p.title,description:p.challenge};}
+export default async function ProjectDetail({params}:{params:{slug:string}}){const p=PROJECTS.find(x=>x.slug===params.slug);if(!p)notFound();return <main><Navbar/><section className="pt-36 pb-16 bg-deep-blue"><Container><span className="eyebrow text-electric">{p.sector} · {p.label}</span><h1 className="text-white text-4xl md:text-h1 max-w-4xl mt-6">{p.title}</h1><p className="text-white/60 mt-5">{p.location}</p></Container></section><section className="py-20"><Container className="grid lg:grid-cols-5 gap-12"><div className="lg:col-span-3 relative h-[480px]"><Image src={p.image.src} alt={p.image.alt} fill sizes="(max-width: 1024px) 100vw, 60vw" className="object-cover"/></div><div className="lg:col-span-2"><h2 className="text-xl font-semibold text-navy">Challenge</h2><p className="text-[16px] leading-relaxed text-navy/70 mt-3">{p.challenge}</p><h2 className="text-xl font-semibold text-navy mt-10">Approach</h2><ol className="mt-3 space-y-3">{p.approach.map((x,i)=><li key={x} className="flex gap-3 text-[15px] text-navy/70"><span className="text-electric font-semibold">0{i+1}</span>{x}</li>)}</ol><div className="border-l-2 border-electric pl-5 mt-10"><h2 className="text-xl font-semibold text-navy">Outcome</h2><p className="text-[16px] leading-relaxed text-navy/70 mt-3">{p.outcome}</p></div><Link href="/rfq" className="inline-flex bg-deep-blue text-white px-6 py-4 text-cta uppercase tracking-widest mt-10 hover:bg-electric">Discuss your requirement</Link></div></Container></section><Footer/></main>}

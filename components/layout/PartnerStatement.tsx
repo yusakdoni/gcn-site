@@ -1,0 +1,3 @@
+import { Container } from "@/components/ui/Container";
+import { Button } from "@/components/ui/Button";
+export function PartnerStatement(){return <section className="py-16 border-y border-mist bg-white"><Container className="flex flex-col md:flex-row items-center justify-between gap-6"><p className="text-body text-navy/80 max-w-2xl text-center md:text-left">We work with manufacturers, distributors, specialist suppliers, contractors, logistics providers, and project partners to fulfill client requirements.</p><Button href="/contact#partner" variant="ghost" className="whitespace-nowrap">Become a Supplier / Partner</Button></Container></section>}

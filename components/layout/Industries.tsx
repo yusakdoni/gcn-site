@@ -1,0 +1,7 @@
+import Image from "next/image";
+import Link from "next/link";
+import { Container } from "@/components/ui/Container";
+import { SectionHeader } from "@/components/ui/SectionHeader";
+import { PHOTOS } from "@/lib/data/photos";
+import { INDUSTRIES } from "@/lib/data/industries";
+export function Industries(){return <section className="py-24 md:py-32 bg-offwhite"><Container><div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6"><SectionHeader eyebrow="Industries" title="Where our capabilities are most relevant"/><Link href="/industries" className="text-nav underline underline-offset-4 whitespace-nowrap">Explore industries</Link></div><div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-16">{INDUSTRIES.map((ind,i)=>{const p=PHOTOS[ind.image as keyof typeof PHOTOS];return <Link key={ind.slug} href={`/industries/${ind.slug}`} className="group bg-white border border-mist overflow-hidden"><div className="relative h-52"><Image src={p.src} alt={ind.imageAlt} fill sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-105"/><span className="absolute top-4 left-4 bg-white px-3 py-2 text-[11px] uppercase tracking-widest text-deep-blue">{String(i+1).padStart(2,"0")}</span></div><div className="p-7"><h3 className="text-h3 text-lg">{ind.title}</h3><p className="text-[15px] text-navy/70 mt-3 leading-relaxed">{ind.description}</p><span className="text-nav text-electric mt-5 inline-block">View industry →</span></div></Link>})}</div></Container></section>}
