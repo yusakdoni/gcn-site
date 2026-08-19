@@ -15,7 +15,7 @@ export interface RFQPayload {
   deliveryLocation: string;
   budgetRange?: string;
   additionalInformation?: string;
-  // attachment is handled as multipart/form-data separately — see /api/rfq
+  // attachment is handled as multipart/form-data separately — see public/rfq.php
 }
 
 export const INDUSTRY_OPTIONS = ["Construction","Construction Supply","Machinery & Industrial","Chemical & Industrial","Medical & Healthcare","Aviation"];

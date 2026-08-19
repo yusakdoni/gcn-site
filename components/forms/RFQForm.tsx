@@ -18,7 +18,7 @@ export function RFQForm() {
     const formData = new FormData(form);
 
     try {
-      const res = await fetch("/api/rfq", { method: "POST", body: formData });
+      const res = await fetch("/rfq.php", { method: "POST", body: formData });
       if (!res.ok) throw new Error("Request failed");
       setStatus("success");
       form.reset();
