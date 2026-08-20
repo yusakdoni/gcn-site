@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const anthropic = new Anthropic({ apiKey });
+  const anthropic = new Anthropic({ apiKey, timeout: 20_000 });
 
   try {
     const response = await anthropic.messages.create({
@@ -65,9 +65,32 @@ export async function POST(req: NextRequest) {
     const textBlock = response.content.find((b) => b.type === "text");
     const reply = textBlock && "text" in textBlock ? textBlock.text : "";
 
+    if (!reply) {
+      console.error(
+        "AI sales agent: Anthropic response had no text block.",
+        JSON.stringify(response)
+      );
+      return NextResponse.json(
+        { error: "Empty response from model" },
+        { status: 502 }
+      );
+    }
+
     return NextResponse.json({ reply });
   } catch (err) {
-    console.error("AI sales agent error:", err);
+    // Log enough detail to diagnose from Vercel Function Logs without
+    // leaking anything to the client. Anthropic SDK errors expose
+    // `status` (HTTP code) and `error` (API error body) — these are the
+    // fastest way to tell apart an invalid/missing key (401), an
+    // out-of-credit account (400/402), a rate limit (429), vs a transient
+    // outage (5xx).
+    const status = (err as { status?: number })?.status;
+    const detail = (err as { error?: unknown })?.error;
+    console.error("AI sales agent error:", {
+      status,
+      detail,
+      message: err instanceof Error ? err.message : String(err),
+    });
     return NextResponse.json(
       { error: "Failed to get a response" },
       { status: 500 }
