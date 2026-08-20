@@ -1,2 +1,7 @@
 import { MetadataRoute } from "next";
-export default function robots():MetadataRoute.Robots{return{rules:{userAgent:"*",allow:"/"},sitemap:"https://gcnusantara.com/sitemap.xml"};}
+export default function robots(): MetadataRoute.Robots {
+  return {
+    rules: { userAgent: "*", allow: "/", disallow: ["/api/"] },
+    sitemap: "https://gcnusantara.com/sitemap.xml",
+  };
+}

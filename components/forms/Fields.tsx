@@ -62,8 +62,8 @@ export function ConsentCheckbox({ name }: { name: string }) {
 }
 
 // Honeypot field: hidden from real visitors via CSS, but bots that fill in
-// every field will populate it. The PHP handlers (public/contact.php,
-// public/rfq.php) reject any submission where this field is non-empty.
+// every field will populate it. The API routes (app/api/contact,
+// app/api/rfq) reject any submission where this field is non-empty.
 // Do not remove the "hp_" name — it doubles as the server-side check key.
 export function HoneypotField() {
   return (

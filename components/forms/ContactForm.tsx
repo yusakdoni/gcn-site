@@ -16,7 +16,7 @@ export function ContactForm() {
     const formData = new FormData(form);
 
     try {
-      const res = await fetch("/contact.php", {
+      const res = await fetch("/api/contact", {
         method: "POST",
         body: JSON.stringify(Object.fromEntries(formData)),
         headers: { "Content-Type": "application/json" },
