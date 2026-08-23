@@ -54,11 +54,17 @@ export async function POST(req: NextRequest) {
 
   const anthropic = new Anthropic({ apiKey, timeout: 20_000 });
 
+  const lang = body.lang === "en" ? "en" : "id";
+  const languageInstruction =
+    lang === "en"
+      ? "\n\nRespond in English, regardless of what language earlier context implies, unless the visitor writes in a different language — in that case, mirror the visitor's language instead."
+      : "\n\nBalas dalam Bahasa Indonesia, kecuali pengunjung menulis dalam bahasa lain — dalam hal itu, ikuti bahasa yang dipakai pengunjung.";
+
   try {
     const response = await anthropic.messages.create({
       model: "claude-sonnet-5",
       max_tokens: 500,
-      system: SALES_AGENT_SYSTEM_PROMPT,
+      system: SALES_AGENT_SYSTEM_PROMPT + languageInstruction,
       messages,
     });
 

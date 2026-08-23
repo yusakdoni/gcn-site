@@ -1,4 +1,6 @@
+"use client";
 import { InputHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 const fieldBase =
   "w-full border border-mist bg-white px-4 py-3 text-[15px] text-navy placeholder:text-navy/30 focus:border-navy focus:outline-none transition-colors";
@@ -14,12 +16,14 @@ function Label({ children, required }: { children: string; required?: boolean })
 
 export function TextField({
   label,
+  labelId,
   required,
   ...props
-}: InputHTMLAttributes<HTMLInputElement> & { label: string; required?: boolean }) {
+}: InputHTMLAttributes<HTMLInputElement> & { label: string; labelId?: string; required?: boolean }) {
+  const { lang } = useLanguage();
   return (
     <div>
-      <Label required={required}>{label}</Label>
+      <Label required={required}>{lang === "id" ? labelId || label : label}</Label>
       <input className={fieldBase} required={required} {...props} />
     </div>
   );
@@ -27,15 +31,18 @@ export function TextField({
 
 export function SelectField({
   label,
+  labelId,
   required,
   options,
   ...props
-}: SelectHTMLAttributes<HTMLSelectElement> & { label: string; required?: boolean; options: string[] }) {
+}: SelectHTMLAttributes<HTMLSelectElement> & { label: string; labelId?: string; required?: boolean; options: string[] }) {
+  const { lang } = useLanguage();
+  const displayLabel = lang === "id" ? labelId || label : label;
   return (
     <div>
-      <Label required={required}>{label}</Label>
+      <Label required={required}>{displayLabel}</Label>
       <select className={`${fieldBase} appearance-none bg-white`} required={required} {...props}>
-        <option value="">Select {label.toLowerCase()}</option>
+        <option value="">{lang === "id" ? `Pilih ${displayLabel.toLowerCase()}` : `Select ${displayLabel.toLowerCase()}`}</option>
         {options.map((o) => (
           <option key={o} value={o}>
             {o}
@@ -47,16 +54,27 @@ export function SelectField({
 }
 
 export function ConsentCheckbox({ name }: { name: string }) {
+  const { lang } = useLanguage();
   return (
     <label className="flex items-start gap-3 text-[13px] text-navy/70">
       <input type="checkbox" name={name} required className="mt-1" />
-      <span>
-        I agree that GCN may contact me about this request, in accordance with the{" "}
-        <a href="/privacy-policy" className="text-electric underline underline-offset-2" target="_blank" rel="noopener noreferrer">
-          Privacy Policy
-        </a>
-        . <span className="text-electric">*</span>
-      </span>
+      {lang === "id" ? (
+        <span>
+          Saya setuju GCN dapat menghubungi saya terkait permintaan ini, sesuai dengan{" "}
+          <a href="/privacy-policy" className="text-electric underline underline-offset-2" target="_blank" rel="noopener noreferrer">
+            Kebijakan Privasi
+          </a>
+          . <span className="text-electric">*</span>
+        </span>
+      ) : (
+        <span>
+          I agree that GCN may contact me about this request, in accordance with the{" "}
+          <a href="/privacy-policy" className="text-electric underline underline-offset-2" target="_blank" rel="noopener noreferrer">
+            Privacy Policy
+          </a>
+          . <span className="text-electric">*</span>
+        </span>
+      )}
     </label>
   );
 }
@@ -80,12 +98,14 @@ export function HoneypotField() {
 
 export function TextareaField({
   label,
+  labelId,
   required,
   ...props
-}: TextareaHTMLAttributes<HTMLTextAreaElement> & { label: string; required?: boolean }) {
+}: TextareaHTMLAttributes<HTMLTextAreaElement> & { label: string; labelId?: string; required?: boolean }) {
+  const { lang } = useLanguage();
   return (
     <div>
-      <Label required={required}>{label}</Label>
+      <Label required={required}>{lang === "id" ? labelId || label : label}</Label>
       <textarea className={`${fieldBase} min-h-[120px] resize-y`} required={required} {...props} />
     </div>
   );

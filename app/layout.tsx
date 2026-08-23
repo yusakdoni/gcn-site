@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ChatWidget from "@/components/ChatWidget";
+import {LanguageProvider} from "@/lib/i18n/LanguageContext";
 const SITE_URL="https://gcnusantara.com";
 // Set NEXT_PUBLIC_SITE_INDEXABLE=false in env vars for any staging/preview
 // deployment (e.g. a temporary Vercel URL) so search engines don't index it
@@ -19,4 +20,4 @@ export const metadata:Metadata={metadataBase:new URL(SITE_URL),title:{default:SI
 };
 const organizationJsonLd={"@context":"https://schema.org","@type":"Organization","@id":`${SITE_URL}/#organization`,name:"PT Gega Cahaya Nusantara",legalName:"PT Gega Cahaya Nusantara",alternateName:["GCN","Gega Cahaya Nusantara","GCN Indonesia"],url:SITE_URL,logo:`${SITE_URL}/icon.png`,image:`${SITE_URL}/og-image.png`,description:SITE_DESCRIPTION,email:"sales@gcnusantara.com",address:{"@type":"PostalAddress",streetAddress:"Kawasan Pergudangan dan Industri PKT Bitung, Blok A6–A7",addressLocality:"Tangerang",addressRegion:"Banten",addressCountry:"ID"}};
 const websiteJsonLd={"@context":"https://schema.org","@type":"WebSite","@id":`${SITE_URL}/#website`,url:SITE_URL,name:SITE_NAME,publisher:{"@id":`${SITE_URL}/#organization`}};
-export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="en"><head><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(organizationJsonLd)}}/><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(websiteJsonLd)}}/></head><body>{children}<ChatWidget /></body></html>}
+export default function RootLayout({children}:{children:React.ReactNode}){return <html lang="en"><head><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(organizationJsonLd)}}/><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(websiteJsonLd)}}/></head><body><LanguageProvider>{children}<ChatWidget /></LanguageProvider></body></html>}

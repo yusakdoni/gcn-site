@@ -1,7 +1,7 @@
 interface SectionHeaderProps {
-  eyebrow: string;
-  title: string;
-  description?: string;
+  eyebrow: React.ReactNode;
+  title: React.ReactNode;
+  description?: React.ReactNode;
   align?: "left" | "center";
   dark?: boolean; // use on navy/dark-background sections (e.g. Industries)
 }
