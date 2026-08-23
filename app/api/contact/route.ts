@@ -12,6 +12,15 @@ export async function POST(req: NextRequest) {
   // Honeypot anti-bot — field tersembunyi, kalau terisi berarti bot.
   const honeypot = String(body.hp_ref_note ?? "").trim();
   if (honeypot !== "") {
+    // Logged deliberately (unlike a real spam-bot response, which stays
+    // silent) so this is diagnosable from Vercel Function Logs — a
+    // legitimate visitor should never trip this. If real submissions keep
+    // landing here, the honeypot itself needs rethinking (e.g. dropped in
+    // favor of a time-based check), not just another field rename.
+    console.warn(
+      "Contact form: honeypot field was non-empty, treating as spam and skipping send.",
+      { honeypotLength: honeypot.length, honeypotPreview: honeypot.slice(0, 40) }
+    );
     return NextResponse.json({ ok: true });
   }
 

@@ -26,7 +26,12 @@ export async function POST(req: NextRequest) {
   const field = (key: string) => String(formData.get(key) ?? "").trim();
 
   // Honeypot anti-bot.
-  if (field("hp_ref_note") !== "") {
+  const honeypotValue = field("hp_ref_note");
+  if (honeypotValue !== "") {
+    console.warn(
+      "RFQ form: honeypot field was non-empty, treating as spam and skipping send.",
+      { honeypotLength: honeypotValue.length, honeypotPreview: honeypotValue.slice(0, 40) }
+    );
     return NextResponse.json({ ok: true });
   }
 
