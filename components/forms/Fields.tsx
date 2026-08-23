@@ -82,12 +82,18 @@ export function ConsentCheckbox({ name }: { name: string }) {
 // Honeypot field: hidden from real visitors via CSS, but bots that fill in
 // every field will populate it. The API routes (app/api/contact,
 // app/api/rfq) reject any submission where this field is non-empty.
-// Do not remove the "hp_" name — it doubles as the server-side check key.
+// Field name deliberately avoids "website"/"url"/"company" — those are
+// common autofill-category keywords, and some browsers/password managers
+// will fill a hidden field matching those patterns even with
+// autoComplete="off", which silently swallowed real human submissions
+// (form said "sent", but nothing ever reached Resend). "hp_ref_note" reads
+// as arbitrary/unrelated to any browser autofill category.
+// Do not remove the "hp_" prefix — it doubles as the server-side check key.
 export function HoneypotField() {
   return (
     <input
       type="text"
-      name="hp_website"
+      name="hp_ref_note"
       tabIndex={-1}
       autoComplete="off"
       aria-hidden="true"

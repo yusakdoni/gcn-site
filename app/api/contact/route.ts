@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Honeypot anti-bot — field tersembunyi, kalau terisi berarti bot.
-  const honeypot = String(body.hp_website ?? "").trim();
+  const honeypot = String(body.hp_ref_note ?? "").trim();
   if (honeypot !== "") {
     return NextResponse.json({ ok: true });
   }
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
   const resend = new Resend(apiKey);
 
   try {
-    await resend.emails.send({
+    const result = await resend.emails.send({
       // Domain pengirim harus sudah diverifikasi di Resend (lihat catatan setup).
       from: "GCN Website <no-reply@gcnusantara.com>",
       to: SALES_TO,
@@ -63,6 +63,18 @@ export async function POST(req: NextRequest) {
         message,
       ].join("\n"),
     });
+
+    // The Resend SDK does NOT throw on API-level rejections (invalid
+    // sender domain, bad recipient, rate limit, etc.) — it returns
+    // { data, error } instead. Without this check, a rejected email
+    // would still report "sent successfully" to the visitor.
+    if (result.error) {
+      console.error("Resend rejected contact email:", result.error);
+      return NextResponse.json(
+        { error: "Failed to send email" },
+        { status: 502 }
+      );
+    }
 
     return NextResponse.json({ ok: true });
   } catch (err) {
