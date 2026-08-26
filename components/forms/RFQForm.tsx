@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { TextField, SelectField, TextareaField, ConsentCheckbox, HoneypotField } from "@/components/forms/Fields";
-import { INDUSTRY_OPTIONS } from "@/lib/types/rfq";
+import { INDUSTRY_OPTIONS, INDUSTRY_OPTIONS_ID } from "@/lib/types/rfq";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -55,7 +55,7 @@ export function RFQForm() {
         <TextField label="Phone" labelId="Telepon" name="phone" type="tel" required />
       </div>
 
-      <SelectField label="Industry" labelId="Industri" name="industry" options={INDUSTRY_OPTIONS} required />
+      <SelectField label="Industry" labelId="Industri" name="industry" options={INDUSTRY_OPTIONS} optionLabelsId={INDUSTRY_OPTIONS_ID} required />
 
       <TextField label="Product / Service Required" labelId="Produk / Layanan yang Dibutuhkan" name="productOrService" required />
       <TextareaField label="Specification" labelId="Spesifikasi" name="specification" required />

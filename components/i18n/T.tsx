@@ -6,8 +6,9 @@ import {useLanguage} from "@/lib/i18n/LanguageContext";
  * Safe to use as a child of a Server Component — this is the only
  * client-side piece, so pages keep their server-rendered SEO content
  * (generateMetadata, static params, initial HTML) untouched. The initial
- * server-rendered paint always shows `en` (matches the site's existing
- * metadata language); after hydration it swaps to the saved preference.
+ * server-rendered paint always shows `id` (Bahasa Indonesia is the site's
+ * default language); after hydration it swaps to the visitor's saved
+ * preference if they had previously chosen English.
  */
 export function T({en,id}:{en:React.ReactNode;id:React.ReactNode}){
  const{lang}=useLanguage();

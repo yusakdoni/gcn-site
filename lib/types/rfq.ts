@@ -19,3 +19,15 @@ export interface RFQPayload {
 }
 
 export const INDUSTRY_OPTIONS = ["Construction","Construction Supply","Machinery & Industrial","Chemical & Industrial","Medical & Healthcare","Aviation"];
+
+// Tampilan label Bahasa Indonesia untuk dropdown Industry di form RFQ.
+// Value yang dikirim ke backend/email tetap dalam Bahasa Inggris (INDUSTRY_OPTIONS)
+// supaya konsisten dengan data internal — ini murni untuk tampilan.
+export const INDUSTRY_OPTIONS_ID: Record<string, string> = {
+  "Construction": "Konstruksi",
+  "Construction Supply": "Supply Material Konstruksi",
+  "Machinery & Industrial": "Mesin & Industri",
+  "Chemical & Industrial": "Kimia & Industri",
+  "Medical & Healthcare": "Medis & Kesehatan",
+  "Aviation": "Penerbangan",
+};

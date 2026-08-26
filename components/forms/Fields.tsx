@@ -34,8 +34,9 @@ export function SelectField({
   labelId,
   required,
   options,
+  optionLabelsId,
   ...props
-}: SelectHTMLAttributes<HTMLSelectElement> & { label: string; labelId?: string; required?: boolean; options: string[] }) {
+}: SelectHTMLAttributes<HTMLSelectElement> & { label: string; labelId?: string; required?: boolean; options: string[]; optionLabelsId?: Record<string, string> }) {
   const { lang } = useLanguage();
   const displayLabel = lang === "id" ? labelId || label : label;
   return (
@@ -45,7 +46,7 @@ export function SelectField({
         <option value="">{lang === "id" ? `Pilih ${displayLabel.toLowerCase()}` : `Select ${displayLabel.toLowerCase()}`}</option>
         {options.map((o) => (
           <option key={o} value={o}>
-            {o}
+            {lang === "id" ? optionLabelsId?.[o] || o : o}
           </option>
         ))}
       </select>

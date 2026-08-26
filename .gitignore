@@ -1,2 +1,12 @@
 node_modules
 .next
+
+# Environment variables — never commit real secrets (RESEND_API_KEY,
+# ANTHROPIC_API_KEY, etc.). Only .env.example (with empty values) is
+# tracked in git.
+.env
+.env.local
+.env.*.local
+
+# OS / editor
+.DS_Store

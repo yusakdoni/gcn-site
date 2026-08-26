@@ -8,11 +8,9 @@ import {useLanguage} from "@/lib/i18n/LanguageContext";
 import {LanguageToggle} from "@/components/layout/LanguageToggle";
 
 const NAV_LINKS=[
+ {href:"/",en:"Home",id:"Beranda"},
  {href:"/about",en:"About",id:"Tentang Kami"},
- {href:"/services",en:"Supply & Trading",id:"Supply & Trading"},
- {href:"/industries",en:"Industries",id:"Industri"},
  {href:"/projects",en:"Projects",id:"Proyek"},
- {href:"/sertifikasi",en:"Certification",id:"Sertifikasi"},
  {href:"/contact",en:"Contact",id:"Kontak"},
 ];
 

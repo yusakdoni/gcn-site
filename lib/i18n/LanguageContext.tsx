@@ -4,11 +4,13 @@ import {createContext,useContext,useEffect,useState,useCallback} from "react";
 export type Lang = "en" | "id";
 interface LanguageContextValue {lang:Lang;setLang:(l:Lang)=>void;toggle:()=>void;}
 
-const LanguageContext=createContext<LanguageContextValue>({lang:"en",setLang:()=>{},toggle:()=>{}});
+const LanguageContext=createContext<LanguageContextValue>({lang:"id",setLang:()=>{},toggle:()=>{}});
 const STORAGE_KEY="gcn-lang";
 
 export function LanguageProvider({children}:{children:React.ReactNode}){
- const[lang,setLangState]=useState<Lang>("en");
+ // Bahasa Indonesia adalah default situs (target audiens utama Indonesia).
+ // Preferensi tersimpan (localStorage/cookie) tetap dihormati saat hydrate.
+ const[lang,setLangState]=useState<Lang>("id");
 
  useEffect(()=>{
   try{
