@@ -1,7 +1,0 @@
-import Link from "next/link";
-import { Container } from "@/components/ui/Container";
-import { SectionHeader } from "@/components/ui/SectionHeader";
-import { INSIGHTS } from "@/lib/data/insights";
-import { T } from "@/components/i18n/T";
-import { INSIGHTS_ID } from "@/lib/i18n/data-id";
-export function InsightsTeaser(){const featured=INSIGHTS.slice(0,3);return <section className="py-24 md:py-32 bg-offwhite"><Container><div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6"><SectionHeader eyebrow={<T en="Insights" id="Wawasan"/>} title={<T en="Practical perspectives from the work we do" id="Perspektif praktis dari pekerjaan yang kami lakukan"/>}/><Link href="/insights" className="text-nav underline underline-offset-4"><T en="View all insights" id="Lihat semua wawasan"/></Link></div><div className="grid md:grid-cols-3 gap-6 mt-16">{featured.map(a=>{const tr=INSIGHTS_ID[a.slug];return <Link href={`/insights/${a.slug}`} key={a.slug} className="bg-white border border-mist p-8 min-h-[230px] hover:border-deep-blue transition-colors"><span className="text-xs uppercase tracking-[0.16em] text-electric"><T en={a.cat} id={tr?.cat||a.cat}/></span><h3 className="text-xl text-navy mt-10 leading-snug"><T en={a.title} id={tr?.title||a.title}/></h3><span className="inline-block mt-8 text-sm underline underline-offset-4"><T en="Read perspective" id="Baca selengkapnya"/></span></Link>})}</div></Container></section>}

@@ -1,6 +1,6 @@
 {
   "name": "gcn-supply-trading-construction",
-  "version": "8.1.8",
+  "version": "8.2.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -13,8 +13,7 @@
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
     "lucide-react": "^0.383.0",
-    "resend": "^4.0.1",
-    "@anthropic-ai/sdk": "^0.117.1"
+    "resend": "^4.0.1"
   },
   "devDependencies": {
     "typescript": "^5.4.0",

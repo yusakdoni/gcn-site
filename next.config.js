@@ -10,17 +10,26 @@ const nextConfig = {
     ],
   },
 
-  // Redirect old page structure (removed in the site simplification) to
-  // their closest equivalent in the new structure, so previously indexed
-  // URLs and any existing inbound/bookmarked links don't 404.
+  // Redirect old page structure to their equivalent in the current
+  // structure, so previously indexed URLs and any existing inbound/
+  // bookmarked links don't 404. Two generations of restructuring are
+  // covered here: v8.1.8 (About/Projects/Contact + removed Industries/
+  // Sertifikasi/Capabilities/Insights) and v8.2.1 (renamed to the
+  // Services/Our Work/Client Impact/Company/Work With Us structure).
   async redirects() {
     return [
-      { source: "/services", destination: "/about", permanent: true },
-      { source: "/services/:slug", destination: "/about", permanent: true },
-      { source: "/industries", destination: "/about", permanent: true },
-      { source: "/industries/:slug", destination: "/about", permanent: true },
-      { source: "/sertifikasi", destination: "/about", permanent: true },
-      { source: "/capabilities", destination: "/about", permanent: true },
+      // v8.2.1 renames
+      { source: "/about", destination: "/company", permanent: true },
+      { source: "/projects", destination: "/our-work", permanent: true },
+      { source: "/projects/:slug", destination: "/our-work/:slug", permanent: true },
+      { source: "/contact", destination: "/work-with-us", permanent: true },
+
+      // v8.1.8 removals (services now exists again as a real page —
+      // deliberately NOT redirected)
+      { source: "/industries", destination: "/company", permanent: true },
+      { source: "/industries/:slug", destination: "/company", permanent: true },
+      { source: "/sertifikasi", destination: "/company", permanent: true },
+      { source: "/capabilities", destination: "/company", permanent: true },
       { source: "/insights", destination: "/", permanent: true },
       { source: "/insights/:slug", destination: "/", permanent: true },
     ];

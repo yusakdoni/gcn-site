@@ -2,6 +2,8 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Container } from "@/components/ui/Container";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { PageHero } from "@/components/ui/PageHero";
+import { PageCTA } from "@/components/ui/PageCTA";
 import { PHOTOS } from "@/lib/data/photos";
 import Image from "next/image";
 import { T } from "@/components/i18n/T";
@@ -17,42 +19,26 @@ const VALUES = [
 ];
 
 export const metadata = {
-  title: "About Us",
+  title: "Our Company",
   description: "PT Gega Cahaya Nusantara (GCN) — supplier and general trading partner for Supply, Trading & Construction requirements across Indonesia, including aviation, medical, chemical, machinery and construction supply.",
 };
 
-export default function AboutPage() {
+export default function CompanyPage() {
   return (
     <main>
       <Navbar />
 
-      {/* HERO — SINGLE IMAGE */}
-      <section className="pt-40 pb-20 bg-deep-blue relative overflow-hidden">
-        <Image
-          src={PHOTOS.hero.src}
-          alt={PHOTOS.hero.alt}
-          fill
-          priority
-          className="object-cover opacity-35"
-        />
-
-        <Container className="relative">
-          <span className="eyebrow text-electric">
-            <T en="About GCN" id="Tentang GCN"/>
-          </span>
-
-          <h1 className="text-white text-3xl md:text-h1 max-w-4xl mt-6">
-            <T en="A practical partner for Supply, Trading & Construction." id="Mitra praktis untuk Supply, Trading & Konstruksi."/>
-          </h1>
-
-          <p className="text-white/70 text-body mt-6 max-w-2xl">
-            <T
-              en="PT Gega Cahaya Nusantara supports organizations with product supply, wholesale trading and construction execution. For specialized requirements, we start from the client's specification rather than publishing a premature fixed catalog."
-              id="PT Gega Cahaya Nusantara mendukung berbagai organisasi melalui supply produk, perdagangan grosir dan pelaksanaan konstruksi. Untuk kebutuhan khusus, kami memulai dari spesifikasi klien, bukan menerbitkan katalog tetap yang prematur."
-            />
-          </p>
-        </Container>
-      </section>
+      <PageHero
+        eyebrow={<T en="Our Company" id="Perusahaan Kami"/>}
+        title={<T en="A practical partner for Supply, Trading & Construction." id="Mitra praktis untuk Supply, Trading & Konstruksi."/>}
+        description={
+          <T
+            en="PT Gega Cahaya Nusantara supports organizations with product supply, wholesale trading and construction execution. For specialized requirements, we start from the client's specification rather than publishing a premature fixed catalog."
+            id="PT Gega Cahaya Nusantara mendukung berbagai organisasi melalui supply produk, perdagangan grosir dan pelaksanaan konstruksi. Untuk kebutuhan khusus, kami memulai dari spesifikasi klien, bukan menerbitkan katalog tetap yang prematur."
+          />
+        }
+        photo={PHOTOS.hero}
+      />
 
       {/* OUR STRUCTURE */}
       <section className="py-20 bg-white">
@@ -156,6 +142,17 @@ export default function AboutPage() {
           </div>
         </Container>
       </section>
+
+      <PageCTA
+        eyebrow={<T en="Work With Us" id="Kerja Sama"/>}
+        title={<T en="Have a requirement in mind? Let's talk about scope, specification and timeline." id="Punya kebutuhan tertentu? Mari bicarakan ruang lingkup, spesifikasi dan waktunya."/>}
+        primaryHref="/work-with-us"
+        primaryEn="Get in touch"
+        primaryId="Hubungi kami"
+        secondaryHref="/services"
+        secondaryEn="See our services"
+        secondaryId="Lihat layanan kami"
+      />
 
       <Footer />
     </main>

@@ -68,9 +68,10 @@ export default function ChatWidget() {
     setLoading(true);
 
     // GREETING (index 0) is a local-only UI message and was never part of a
-    // real exchange with the model. The Anthropic API requires the first
-    // message in the array to have role "user", so it must be excluded from
-    // what we send — otherwise every very first message would fail.
+    // real exchange with the model. Gemini (like most chat model APIs)
+    // requires the first message in the array to have role "user", so it
+    // must be excluded from what we send — otherwise every very first
+    // message would fail.
     const apiMessages = nextMessages.slice(1);
 
     try {
