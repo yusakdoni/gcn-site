@@ -5,17 +5,32 @@ export const runtime = "nodejs";
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
-const MAX_MESSAGES = 20; // batas panjang percakapan per sesi widget
+const MAX_MESSAGES = 20;
 const MAX_MESSAGE_LENGTH = 2000;
-
-// Model Gemini yang dipakai bisa diganti via env var tanpa ubah kode —
-// berguna karena Google cukup sering memperbarui lineup model gratisnya.
-// "gemini-2.5-flash" dipilih sebagai default karena termasuk model yang
-// paling stabil dan konsisten tersedia di free tier Gemini API per
-// pertengahan 2026. Kalau suatu saat model ini pensiun/diganti Google,
-// cukup set GEMINI_MODEL di Vercel tanpa perlu deploy ulang kode.
 const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+
+function freeFallback(message: string, lang: "id" | "en") {
+  const q = message.toLowerCase();
+  const isAviation = /(aviation|aircraft|pesawat|part number|sparepart|spare part|rotable|consumable)/i.test(q);
+  const isConstruction = /(construction|konstruksi|renovasi|boq|rab|civil|sipil|waterproof|asphalt|aspal)/i.test(q);
+  const isPrice = /(harga|price|quotation|quote|berapa|biaya|cost)/i.test(q);
+  const isPartner = /(partner|partnership|kerja sama|kerjasama|vendor|supplier|rekanan)/i.test(q);
+
+  if (lang === "en") {
+    if (isAviation) return "GCN can review aviation and aircraft spare-parts sourcing requirements. Please prepare the part number/description, quantity, required condition or documentation (if applicable), delivery location, and target date. For a formal review and sourcing request, please submit them through /rfq.";
+    if (isConstruction) return "GCN can review construction supply or execution requirements based on the project scope. Please share the project location, BOQ/specification, target schedule, and whether you need supply-only or supply-and-install/execution. You can submit the details through /rfq for review.";
+    if (isPrice) return "Pricing depends on specification, quantity, sourcing, delivery location, and commercial terms, so I should not guess a number here. Please submit the item/service specification, quantity, location, and target date through /rfq so the team can review it properly.";
+    if (isPartner) return "For supplier, vendor, or partnership inquiries, please use /work-with-us and include your company profile, capability/category, contact person, and relevant product or service information. The GCN team will review the fit before any collaboration is confirmed.";
+    return "GCN supports B2B supply, trading, procurement, project-based supply, and construction requirements. Tell me what product/service you need, the specification or brand/part number if available, quantity, delivery location, and target date, and I can guide you to the right next step.";
+  }
+
+  if (isAviation) return "GCN dapat mereview kebutuhan sourcing aviation dan sparepart pesawat. Siapkan part number/deskripsi, quantity, kondisi atau dokumen yang dibutuhkan bila ada, lokasi pengiriman, dan target waktu. Untuk review dan sourcing formal, kirim melalui /rfq.";
+  if (isConstruction) return "GCN dapat mereview kebutuhan supply maupun pelaksanaan konstruksi sesuai scope proyek. Mohon siapkan lokasi proyek, BOQ/spesifikasi, target schedule, serta apakah kebutuhannya supply-only atau supply + instalasi/eksekusi. Detailnya bisa dikirim melalui /rfq untuk direview.";
+  if (isPrice) return "Harga bergantung pada spesifikasi, quantity, hasil sourcing, lokasi pengiriman, dan terms komersial, jadi saya tidak akan mengarang angka. Kirim spesifikasi barang/jasa, quantity, lokasi, dan target waktunya melalui /rfq agar tim bisa review dengan benar.";
+  if (isPartner) return "Untuk penawaran supplier, vendor, atau kerja sama, silakan gunakan /work-with-us dan sertakan company profile, kategori/kapabilitas, PIC, serta produk atau jasa yang ditawarkan. Tim GCN akan review kecocokannya sebelum kerja sama dikonfirmasi.";
+  return "GCN melayani kebutuhan B2B untuk supply, trading, procurement, project-based supply, dan konstruksi. Coba beri tahu barang/jasa yang dibutuhkan, spesifikasi atau brand/part number bila ada, quantity, lokasi pengiriman, dan target waktunya; saya bantu arahkan langkah berikutnya.";
+}
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
@@ -38,38 +53,24 @@ export async function POST(req: NextRequest) {
       content: String(m.content).slice(0, MAX_MESSAGE_LENGTH),
     }));
 
-  // Sama seperti sebelumnya, percakapan yang dikirim ke Gemini idealnya
-  // dimulai dari giliran "user". Buang giliran "assistant" di awal secara
-  // defensif kalau-kalau client pernah mengirim history yang cacat.
-  while (messages.length > 0 && messages[0].role === "assistant") {
-    messages.shift();
-  }
+  while (messages.length > 0 && messages[0].role === "assistant") messages.shift();
+  if (messages.length === 0) return NextResponse.json({ error: "No messages" }, { status: 400 });
 
-  if (messages.length === 0) {
-    return NextResponse.json({ error: "No messages" }, { status: 400 });
-  }
-
+  const lang: "id" | "en" = body.lang === "en" ? "en" : "id";
+  const latestUserMessage = [...messages].reverse().find((m) => m.role === "user")?.content || "";
   const apiKey = process.env.GEMINI_API_KEY;
+
+  // Zero-cost always-on mode: if Gemini is not configured, the sales assistant
+  // still works as a safe intent-based sales concierge instead of showing an error.
   if (!apiKey) {
-    console.error(
-      "GEMINI_API_KEY is not set — AI sales agent cannot respond. Set it in Vercel Project Settings > Environment Variables. Ambil API key gratis di https://aistudio.google.com/apikey"
-    );
-    return NextResponse.json(
-      { error: "Chat assistant is not configured yet" },
-      { status: 500 }
-    );
+    return NextResponse.json({ reply: freeFallback(latestUserMessage, lang), mode: "fallback" });
   }
 
-  const lang = body.lang === "en" ? "en" : "id";
   const languageInstruction =
     lang === "en"
-      ? "\n\nRespond in English, regardless of what language earlier context implies, unless the visitor writes in a different language — in that case, mirror the visitor's language instead."
-      : "\n\nBalas dalam Bahasa Indonesia, kecuali pengunjung menulis dalam bahasa lain — dalam hal itu, ikuti bahasa yang dipakai pengunjung.";
+      ? "\n\nRespond in English unless the visitor clearly uses another language; then mirror the visitor's language."
+      : "\n\nBalas dalam Bahasa Indonesia, kecuali pengunjung menulis dalam bahasa lain; dalam hal itu ikuti bahasa pengunjung.";
 
-  // Gemini's REST format: "contents" is the turn-by-turn history, each
-  // turn using role "user" or "model" (not "assistant") with text wrapped
-  // in a "parts" array. The system prompt is passed separately via
-  // "system_instruction".
   const contents = messages.map((m) => ({
     role: m.role === "assistant" ? "model" : "user",
     parts: [{ text: m.content }],
@@ -83,13 +84,9 @@ export async function POST(req: NextRequest) {
         "x-goog-api-key": apiKey,
       },
       body: JSON.stringify({
-        system_instruction: {
-          parts: [{ text: SALES_AGENT_SYSTEM_PROMPT + languageInstruction }],
-        },
+        system_instruction: { parts: [{ text: SALES_AGENT_SYSTEM_PROMPT + languageInstruction }] },
         contents,
-        generationConfig: {
-          maxOutputTokens: 500,
-        },
+        generationConfig: { maxOutputTokens: 500, temperature: 0.4 },
       }),
       signal: AbortSignal.timeout(20_000),
     });
@@ -97,20 +94,10 @@ export async function POST(req: NextRequest) {
     const data = await geminiRes.json().catch(() => null);
 
     if (!geminiRes.ok) {
-      // Log enough detail to diagnose from Vercel Function Logs without
-      // leaking anything to the client. Gemini's error body under
-      // `error.status`/`error.message` is the fastest way to tell apart
-      // an invalid/missing key (401/403 — "PERMISSION_DENIED" /
-      // "UNAUTHENTICATED"), a free-tier rate limit (429 —
-      // "RESOURCE_EXHAUSTED"), vs a transient outage (5xx).
-      console.error("AI sales agent error (Gemini):", {
-        httpStatus: geminiRes.status,
-        detail: data?.error,
-      });
-      return NextResponse.json(
-        { error: "Failed to get a response" },
-        { status: 500 }
-      );
+      console.error("AI sales agent error (Gemini):", { httpStatus: geminiRes.status, detail: data?.error });
+      // Free-tier quota, invalid key, or transient provider errors should not
+      // make the public sales widget unusable.
+      return NextResponse.json({ reply: freeFallback(latestUserMessage, lang), mode: "fallback" });
     }
 
     const reply: string =
@@ -118,28 +105,11 @@ export async function POST(req: NextRequest) {
         ?.map((p: { text?: string }) => p.text || "")
         .join("") ?? "";
 
-    if (!reply) {
-      // A missing reply with a 200 OK usually means the safety filter
-      // blocked the output — check candidates[0].finishReason
-      // ("SAFETY", "MAX_TOKENS", etc.) in the logged payload below.
-      console.error(
-        "AI sales agent: Gemini response had no text part.",
-        JSON.stringify(data)
-      );
-      return NextResponse.json(
-        { error: "Empty response from model" },
-        { status: 502 }
-      );
-    }
+    if (!reply) return NextResponse.json({ reply: freeFallback(latestUserMessage, lang), mode: "fallback" });
 
-    return NextResponse.json({ reply });
+    return NextResponse.json({ reply, mode: "gemini" });
   } catch (err) {
-    console.error("AI sales agent error:", {
-      message: err instanceof Error ? err.message : String(err),
-    });
-    return NextResponse.json(
-      { error: "Failed to get a response" },
-      { status: 500 }
-    );
+    console.error("AI sales agent error:", { message: err instanceof Error ? err.message : String(err) });
+    return NextResponse.json({ reply: freeFallback(latestUserMessage, lang), mode: "fallback" });
   }
 }
