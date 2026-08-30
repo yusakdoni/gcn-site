@@ -14,24 +14,16 @@ import { PROJECTS_ID } from "@/lib/i18n/data-id";
 
 export const metadata = {
   title: "Client Impact",
-  description: "How PT Gega Cahaya Nusantara measures and reports impact for clients across Supply, Trading & Construction engagements.",
+  description: "How PT Gega Cahaya Nusantara approaches specification, delivery, commercial control and documentation across client engagements.",
 };
 
-// Placeholder impact metrics. GCN has not yet closed enough verified
-// engagements to publish real performance figures — these are shown as
-// explicit brackets rather than invented numbers, and should be replaced
-// with real, verified figures once available (see disclaimer below).
-const STATS = [
-  { value: "[XX]", labelEn: "engagements completed to date", labelId: "pekerjaan yang telah diselesaikan" },
-  { value: "[XX]%", labelEn: "on-time delivery rate", labelId: "tingkat pengiriman tepat waktu" },
-  { value: "[XX]", labelEn: "industries actively served", labelId: "industri yang aktif kami layani" },
-  { value: "[XX]", labelEn: "supply & execution partners", labelId: "mitra supply & pelaksana" },
+const IMPACT_PRINCIPLES = [
+  { value: "Spec", labelEn: "requirements are reviewed against specification, scope and intended use", labelId: "kebutuhan direview terhadap spesifikasi, scope dan tujuan penggunaan" },
+  { value: "Time", labelEn: "lead time and delivery commitments are reviewed before commercial confirmation", labelId: "lead time dan komitmen pengiriman direview sebelum konfirmasi komersial" },
+  { value: "Cost", labelEn: "sourcing and costing are evaluated before a quotation is committed", labelId: "sourcing dan costing dievaluasi sebelum quotation dikomitmenkan" },
+  { value: "Docs", labelEn: "project, procurement and delivery documents are kept traceable to the transaction", labelId: "dokumen proyek, procurement dan delivery dijaga keterlacakan terhadap transaksi" },
 ];
 
-// Featured work drawn from the same illustrative capability profiles as
-// Our Work — shown here through a client-outcome lens rather than a
-// process lens. Same "not a claim of a specific client engagement"
-// disclaimer applies.
 const FEATURED_SLUGS = ["road-construction-asphalt", "building-material-supply", "medical-equipment-supply"];
 
 export default function ClientImpactPage() {
@@ -43,42 +35,57 @@ export default function ClientImpactPage() {
 
       <PageHero
         eyebrow={<T en="Client Impact" id="Dampak untuk Klien"/>}
-        title={<T en="Impact is measured in delivery, not promises." id="Dampak diukur dari eksekusi, bukan janji."/>}
+        title={<T en="Impact is built through disciplined execution." id="Dampak dibangun melalui eksekusi yang disiplin."/>}
         description={
           <T
-            en="Every engagement is judged on the same terms: did the specification get met, did it arrive on time, and would the client come back. Here is how we intend to report that."
-            id="Setiap pekerjaan dinilai dengan tolok ukur yang sama: apakah spesifikasi terpenuhi, apakah tiba tepat waktu, dan apakah klien akan kembali. Berikut cara kami melaporkannya."
+            en="For GCN, client impact starts with a clear requirement and continues through sourcing, costing, procurement, delivery and documented closeout. We publish verified outcomes when they are available rather than filling the website with unsupported claims."
+            id="Bagi GCN, dampak untuk klien dimulai dari requirement yang jelas dan berlanjut melalui sourcing, costing, procurement, delivery hingga closeout yang terdokumentasi. Kami memilih mempublikasikan hasil yang telah terverifikasi daripada memenuhi website dengan klaim yang belum dapat dipertanggungjawabkan."
           />
         }
         photo={PHOTOS.industrialFactory}
       />
 
-      {/* Honest framing for the stat band below — see also lib/data/projects.ts,
-          which marks its entries as capability-based illustrative examples for
-          the same reason: GCN's public site does not publish invented figures. */}
-      <section className="pt-16 pb-4 bg-deep-blue">
-        <Container>
-          <p className="text-white/50 text-[13px] max-w-2xl border-l-2 border-electric pl-4">
-            <T
-              en="The figures below are placeholders. As GCN completes and verifies client engagements, this page will be updated with real, reportable numbers rather than estimates."
-              id="Angka di bawah ini adalah placeholder. Seiring GCN menyelesaikan dan memverifikasi pekerjaan untuk klien, halaman ini akan diperbarui dengan angka nyata yang dapat dipertanggungjawabkan, bukan perkiraan."
-            />
-          </p>
-        </Container>
-      </section>
+      <StatBand stats={IMPACT_PRINCIPLES} dark />
 
-      <StatBand stats={STATS} dark />
-
-      {/* FEATURED WORK */}
       <section className="py-20 md:py-28 bg-white">
         <Container>
           <SectionHeader
-            eyebrow={<T en="Illustrative Examples" id="Contoh Ilustratif"/>}
-            title={<T en="The kind of outcome we aim to deliver" id="Jenis hasil yang ingin kami capai"/>}
+            eyebrow={<T en="How We Create Value" id="Bagaimana Kami Menciptakan Nilai"/>}
+            title={<T en="Control the requirement before controlling the outcome" id="Kendalikan requirement sebelum mengendalikan hasil"/>}
             description={
               <T
-                en="Capability-based profiles, not claims of a specific client relationship unless separately verified — see Our Work for the full set."
-                id="Profil berbasis kapabilitas, bukan klaim hubungan dengan klien tertentu kecuali diverifikasi terpisah — lihat Karya Kami untuk daftar lengkap."
+                en="The operating discipline is simple: understand the need, source responsibly, calculate the commercial position, confirm what can be delivered, execute, and keep the transaction traceable."
+                id="Disiplin operasionalnya sederhana: pahami kebutuhan, lakukan sourcing secara bertanggung jawab, hitung posisi komersial, konfirmasikan apa yang dapat dipenuhi, eksekusi, dan jaga transaksi tetap terlacak."
+              />
+            }
+          />
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-14">
+            {[
+              ["01", "Requirement clarity", "Kejelasan requirement", "Specification, quantity, location, schedule and acceptance criteria are clarified before sourcing.", "Spesifikasi, quantity, lokasi, schedule dan kriteria penerimaan diperjelas sebelum sourcing."],
+              ["02", "Sourcing discipline", "Disiplin sourcing", "Supplier options are compared against capability, commercial terms, lead time and project fit.", "Opsi supplier dibandingkan berdasarkan kapabilitas, terms komersial, lead time dan kecocokan proyek."],
+              ["03", "Commercial control", "Kontrol komersial", "Pricing is prepared with cost, logistics, execution requirements and project risk in view.", "Pricing disiapkan dengan mempertimbangkan cost, logistics, kebutuhan eksekusi dan risiko proyek."],
+              ["04", "Documented closeout", "Closeout terdokumentasi", "Delivery, acceptance, invoicing and supporting documents remain connected to the project record.", "Delivery, acceptance, invoicing dan dokumen pendukung tetap terhubung dengan record proyek."],
+            ].map(([n, enTitle, idTitle, enBody, idBody]) => (
+              <div key={n} className="border-t border-navy pt-6">
+                <span className="text-electric text-sm font-semibold">{n}</span>
+                <h3 className="text-h3 text-xl mt-5"><T en={enTitle} id={idTitle} /></h3>
+                <p className="text-[14px] leading-relaxed text-navy/65 mt-4"><T en={enBody} id={idBody} /></p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section className="py-20 md:py-28 bg-offwhite border-y border-mist">
+        <Container>
+          <SectionHeader
+            eyebrow={<T en="Capability Profiles" id="Profil Kapabilitas"/>}
+            title={<T en="Examples of requirements GCN is prepared to review" id="Contoh kebutuhan yang siap direview GCN"/>}
+            description={
+              <T
+                en="These are capability-based examples, not claims of a specific client relationship. Actual project references should only be published after they are verified and approved."
+                id="Ini adalah contoh berbasis kapabilitas, bukan klaim hubungan dengan klien tertentu. Referensi proyek aktual hanya dipublikasikan setelah diverifikasi dan disetujui."
               />
             }
           />
@@ -103,37 +110,15 @@ export default function ClientImpactPage() {
         </Container>
       </section>
 
-      {/* CLIENT VOICE — placeholder, to be replaced with a real quote once
-          a client agrees to be quoted. Left visually present (not hidden)
-          so the layout/design is ready to receive real content later. */}
-      <section className="py-24 md:py-28 bg-offwhite border-y border-mist">
-        <Container className="max-w-3xl">
-          <span className="text-[4rem] leading-none text-electric/30 font-semibold select-none">&ldquo;</span>
-          <p className="text-[1.5rem] md:text-[2rem] leading-[1.3] tracking-[-0.01em] text-navy -mt-4">
-            <T
-              en="[Reserved for a direct client quote once one is available and approved for publication.]"
-              id="[Disediakan untuk kutipan langsung dari klien, setelah tersedia dan disetujui untuk dipublikasikan.]"
-            />
-          </p>
-          <div className="mt-8 flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-mist" />
-            <div>
-              <p className="text-[14px] font-semibold text-navy"><T en="[Client name]" id="[Nama Klien]" /></p>
-              <p className="text-[13px] text-navy/50"><T en="[Role, Company]" id="[Jabatan, Perusahaan]" /></p>
-            </div>
-          </div>
-        </Container>
-      </section>
-
       <PageCTA
-        eyebrow={<T en="Work With Us" id="Kerja Sama"/>}
-        title={<T en="Bring us a specification and a deadline — we'll tell you honestly if we can meet it." id="Beri kami spesifikasi dan tenggat waktu — kami akan jujur apakah bisa memenuhinya."/>}
-        primaryHref="/work-with-us"
-        primaryEn="Get in touch"
-        primaryId="Hubungi kami"
-        secondaryHref="/rfq"
-        secondaryEn="Request a quotation"
-        secondaryId="Ajukan penawaran"
+        eyebrow={<T en="Start With the Requirement" id="Mulai dari Requirement"/>}
+        title={<T en="Send the specification, quantity, location and target date. We will review what can realistically be delivered." id="Kirim spesifikasi, quantity, lokasi dan target waktu. Kami akan mereview apa yang secara realistis dapat dipenuhi."/>}
+        primaryHref="/rfq"
+        primaryEn="Request a quotation"
+        primaryId="Ajukan penawaran"
+        secondaryHref="/work-with-us"
+        secondaryEn="Talk to GCN"
+        secondaryId="Hubungi GCN"
       />
 
       <Footer />
