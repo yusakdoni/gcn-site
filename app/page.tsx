@@ -21,8 +21,6 @@ export default function HomePage() {
     <main>
       <Navbar />
       <Hero />
-      <ValueProposition />
-      <Services />
       <StatBand
         stats={HOME_STATS}
         dark
@@ -31,6 +29,8 @@ export default function HomePage() {
         linkEn="See how GCN manages client outcomes →"
         linkId="Lihat bagaimana GCN mengelola hasil untuk klien →"
       />
+      <ValueProposition />
+      <Services />
       <HowWeWork />
       <CapabilityBand />
       <PartnerStatement />
