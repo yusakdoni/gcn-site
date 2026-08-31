@@ -9,8 +9,6 @@ import { FinalCTA } from "@/components/layout/FinalCTA";
 import { Footer } from "@/components/layout/Footer";
 import { StatBand } from "@/components/ui/StatBand";
 
-// Use verified business characteristics rather than fabricated performance numbers.
-// These describe how GCN works and the markets it is prepared to support.
 const HOME_STATS = [
   { value: "B2B", labelEn: "procurement and project-based supply for business requirements", labelId: "pengadaan dan supply berbasis proyek untuk kebutuhan bisnis" },
   { value: "Private", labelEn: "commercial opportunities and direct corporate requirements", labelId: "peluang komersial dan kebutuhan langsung perusahaan swasta" },
@@ -28,6 +26,7 @@ export default function HomePage() {
       <StatBand
         stats={HOME_STATS}
         dark
+        cards
         linkHref="/client-impact"
         linkEn="See how GCN manages client outcomes →"
         linkId="Lihat bagaimana GCN mengelola hasil untuk klien →"
