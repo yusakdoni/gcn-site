@@ -16,11 +16,15 @@ export function ContactForm() {
     setStatus("submitting");
     const form = e.currentTarget;
     const formData = new FormData(form);
+    const payload = {
+      ...Object.fromEntries(formData),
+      sourcePage: `${window.location.pathname}${window.location.search}`,
+    };
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
-        body: JSON.stringify(Object.fromEntries(formData)),
+        body: JSON.stringify(payload),
         headers: { "Content-Type": "application/json" },
       });
       if (!res.ok) throw new Error();
