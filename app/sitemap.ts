@@ -1,5 +1,5 @@
 import {MetadataRoute} from "next";
-const SITE_URL="https://gcnusantara.com";
+const SITE_URL="https://www.gcnusantara.com";
 export default function sitemap():MetadataRoute.Sitemap{const routes=[
  {path:"",priority:1},
  {path:"/aviation-supply",priority:.95},
