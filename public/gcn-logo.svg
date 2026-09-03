@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
+<defs><clipPath id="globeClip"><circle cx="500" cy="500" r="310"/></clipPath></defs>
+<circle cx="500" cy="500" r="330" fill="#0C6B84"/>
+<circle cx="500" cy="500" r="314" fill="none" stroke="#FFFFFF" stroke-width="12"/>
+<g clip-path="url(#globeClip)" fill="#083B63"><path d="M300 350 C360 285 420 270 470 315 C500 340 505 390 540 415 C580 445 615 425 655 390 L760 300 L850 430 L805 620 L680 700 L570 655 L490 700 L390 650 L330 540 Z"/></g>
+<g clip-path="url(#globeClip)" fill="none" stroke="#FFFFFF" stroke-width="5" opacity=".9"><path d="M255 430 C380 335 620 335 745 430"/><path d="M245 555 C380 455 620 455 755 555"/><path d="M350 220 C445 360 445 640 350 780"/><path d="M650 220 C555 360 555 640 650 780"/></g>
+<g clip-path="url(#globeClip)" fill="#FFFFFF"><circle cx="365" cy="370" r="10"/><circle cx="500" cy="330" r="10"/><circle cx="635" cy="390" r="10"/><circle cx="405" cy="520" r="9"/><circle cx="595" cy="535" r="9"/></g>
+<path d="M160 610 C270 420 730 360 840 500 C885 555 850 625 790 670" fill="none" stroke="#C9CDD2" stroke-width="58" stroke-linecap="round"/>
+<path d="M160 610 C270 420 730 360 840 500 C885 555 850 625 790 670" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/>
+<path d="M165 610 C285 765 700 745 850 505" fill="none" stroke="#C9CDD2" stroke-width="62" stroke-linecap="round"/>
+<path d="M165 610 C285 765 700 745 850 505" fill="none" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/>
+<path d="M150 670 C320 810 690 760 870 470" fill="none" stroke="#0C6B84" stroke-width="14" stroke-linecap="round"/>
+</svg>
