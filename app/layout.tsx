@@ -2,7 +2,7 @@ import type {Metadata} from "next";
 import "./globals.css";
 import ChatWidget from "@/components/ChatWidget";
 import {LanguageProvider} from "@/lib/i18n/LanguageContext";
-const SITE_URL="https://gcnusantara.com";
+const SITE_URL="https://www.gcnusantara.com";
 const INDEXABLE=process.env.NEXT_PUBLIC_SITE_INDEXABLE!=="false";
 const SITE_NAME="GCN | PT Gega Cahaya Nusantara";
 const SITE_TITLE="GCN | Procurement, Aviation Supply & Project Execution";
