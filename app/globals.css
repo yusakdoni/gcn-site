@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 @layer base {
- html{scroll-behavior:smooth} body{@apply bg-white text-ink font-sans antialiased} h1,h2,h3{@apply text-navy} :focus-visible{outline:2px solid #00A9F4;outline-offset:3px} ::selection{background:#BDEAF0;color:#041827}
+ html{scroll-behavior:smooth;max-width:100%;overflow-x:clip} body{@apply bg-white text-ink font-sans antialiased;max-width:100%;overflow-x:clip} h1,h2,h3{@apply text-navy;overflow-wrap:anywhere} img,svg{max-width:100%} section[id]{scroll-margin-top:96px} :focus-visible{outline:2px solid #00A9F4;outline-offset:3px} ::selection{background:#BDEAF0;color:#041827}
+ @media(max-width:767px){p{overflow-wrap:anywhere}a,button{touch-action:manipulation}}
  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
 }
 @layer components{
@@ -13,4 +14,5 @@
  .sinergi-orbit-one{width:760px;height:380px;left:50%;top:49%;transform:translate(-50%,-50%) rotate(-12deg)}
  .sinergi-orbit-two{width:620px;height:620px;left:50%;top:50%;transform:translate(-50%,-50%);border-color:rgba(12,107,132,.22);animation-duration:20s}
 }
+@media(max-width:767px){.sinergi-orbit-one{width:420px;height:220px}.sinergi-orbit-two{width:360px;height:360px}}
 @keyframes sinergi-drift{0%{opacity:.4;filter:blur(0)}100%{opacity:.75;filter:blur(.2px)}}
