@@ -1,11 +1,11 @@
 "use client";
 import {useEffect,useState} from "react";
-import Image from "next/image";
 import Link from "next/link";
 import {ChevronDown,Menu as MenuIcon,X} from "lucide-react";
 import {Container} from "@/components/ui/Container";
 import {LanguageToggle} from "@/components/layout/LanguageToggle";
 import {useLanguage} from "@/lib/i18n/LanguageContext";
+import {PRIMARY_LOGO_TRANSPARENT_1024} from "@/lib/primary_logo_transparent_1024";
 
 const CAPABILITIES=[
  {href:"/aviation-supply",en:"Aviation Supply",id:"Aviation Supply"},
@@ -23,7 +23,7 @@ export function Navbar(){
  return <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#061f33]/92 text-white shadow-[0_8px_32px_rgba(0,0,0,.12)] backdrop-blur-xl">
   <Container className="flex h-[72px] items-center justify-between gap-3 md:h-20">
    <Link href="/" className="flex min-w-0 items-center gap-2.5" aria-label="GCN - PT Gega Cahaya Nusantara">
-    <Image src="/gcn-logo.svg" alt="GCN" width={46} height={46} priority className="h-10 w-10 shrink-0 md:h-12 md:w-12"/>
+    <img src={PRIMARY_LOGO_TRANSPARENT_1024} alt="GCN" width={48} height={48} className="h-10 w-10 shrink-0 object-contain md:h-12 md:w-12"/>
     <div className="hidden min-[360px]:block min-w-0 border-l border-white/20 pl-2.5 leading-[1.08] md:pl-3">
      <div className="whitespace-nowrap text-[7.5px] font-bold tracking-[.05em] text-white md:text-[9px]">PT GEGA CAHAYA</div>
      <div className="whitespace-nowrap text-[7.5px] font-bold tracking-[.05em] text-white md:text-[9px]">NUSANTARA</div>
