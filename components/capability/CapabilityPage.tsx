@@ -6,7 +6,7 @@ import {Footer} from "@/components/layout/Footer";
 import {Container} from "@/components/ui/Container";
 import type {CapabilityData} from "@/lib/data/capabilities-v2";
 
-const SITE_URL="https://gcnusantara.com";
+const SITE_URL="https://www.gcnusantara.com";
 export function CapabilityPage({data,aviation=false}:{data:CapabilityData;aviation?:boolean}){
  const pageUrl=`${SITE_URL}/${data.slug}`;
  const serviceJsonLd={"@context":"https://schema.org","@type":"Service",name:data.title,serviceType:data.descriptor,description:data.intro,url:pageUrl,provider:{"@type":"Organization","@id":`${SITE_URL}/#organization`,name:"PT Gega Cahaya Nusantara",url:SITE_URL},areaServed:{"@type":"Country",name:"Indonesia"}};
