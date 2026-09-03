@@ -1,39 +1,44 @@
 "use client";
 import {useEffect,useState} from "react";
+import Image from "next/image";
 import Link from "next/link";
-import {X,Menu as MenuIcon} from "lucide-react";
-import {Button} from "@/components/ui/Button";
+import {ChevronDown,Menu as MenuIcon,X} from "lucide-react";
 import {Container} from "@/components/ui/Container";
-import {useLanguage} from "@/lib/i18n/LanguageContext";
 import {LanguageToggle} from "@/components/layout/LanguageToggle";
+import {useLanguage} from "@/lib/i18n/LanguageContext";
 
-const NAV_LINKS=[
- {href:"/",en:"Home",id:"Beranda"},
- {href:"/services",en:"Our Services",id:"Layanan Kami"},
- {href:"/our-work",en:"Our Work",id:"Karya Kami"},
- {href:"/client-impact",en:"Client Impact",id:"Dampak untuk Klien"},
- {href:"/company",en:"Our Company",id:"Perusahaan Kami"},
- {href:"/work-with-us",en:"Work With Us",id:"Kerja Sama"},
+const CAPABILITIES=[
+ {href:"/aviation-supply",en:"Aviation Supply",id:"Aviation Supply"},
+ {href:"/procurement-sourcing",en:"Procurement & Sourcing",id:"Procurement & Sourcing"},
+ {href:"/general-supply-trading",en:"General Supply & Trading",id:"General Supply & Trading"},
+ {href:"/industrial-supply",en:"Industrial Supply",id:"Industrial Supply"},
+ {href:"/project-based-supply",en:"Project-Based Supply",id:"Project-Based Supply"},
+ {href:"/construction",en:"Construction",id:"Konstruksi"},
 ];
 
 export function Navbar(){
  const[menuOpen,setMenuOpen]=useState(false);const{lang}=useLanguage();
  useEffect(()=>{if(!menuOpen)return;document.body.style.overflow="hidden";const onKey=(e:KeyboardEvent)=>{if(e.key==="Escape")setMenuOpen(false)};window.addEventListener("keydown",onKey);return()=>{document.body.style.overflow="";window.removeEventListener("keydown",onKey)}},[menuOpen]);
- const cta=lang==="id"?"Ajukan Penawaran":"Request a Quotation";
- return <header className="fixed inset-x-0 top-0 z-50 border-b border-mist bg-white/95 shadow-sm backdrop-blur-md">
-  <Container className="flex h-[72px] items-center justify-between gap-2 md:h-20">
-   <Link href="/" className="flex min-w-0 items-center gap-2.5 md:gap-3" aria-label="GCN - PT Gega Cahaya Nusantara">
-    <div className="shrink-0 text-[1.8rem] font-extrabold leading-none tracking-[-0.055em] text-navy md:text-[2.2rem]">GCN</div>
-    <div className="hidden min-[350px]:block min-w-0 border-l border-navy/15 pl-2.5 md:pl-3 leading-[1.05]">
-     <div className="whitespace-nowrap text-[7.5px] font-bold tracking-[0.035em] text-navy md:text-[9px]">PT GEGA CAHAYA</div>
-     <div className="whitespace-nowrap text-[7.5px] font-bold tracking-[0.035em] text-navy md:text-[9px]">NUSANTARA</div>
-     <div className="mt-1 whitespace-nowrap text-[5.5px] font-semibold tracking-[0.12em] text-[#B47A1F] md:text-[7px]">YOUR TRUSTED PARTNERS</div>
+ const label=(en:string,id:string)=>lang==="id"?id:en;
+ return <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#061f33]/92 text-white shadow-[0_8px_32px_rgba(0,0,0,.12)] backdrop-blur-xl">
+  <Container className="flex h-[72px] items-center justify-between gap-3 md:h-20">
+   <Link href="/" className="flex min-w-0 items-center gap-2.5" aria-label="GCN - PT Gega Cahaya Nusantara">
+    <Image src="/gcn-logo.svg" alt="GCN" width={46} height={46} priority className="h-10 w-10 shrink-0 md:h-12 md:w-12"/>
+    <div className="hidden min-[360px]:block min-w-0 border-l border-white/20 pl-2.5 leading-[1.08] md:pl-3">
+     <div className="whitespace-nowrap text-[7.5px] font-bold tracking-[.05em] text-white md:text-[9px]">PT GEGA CAHAYA</div>
+     <div className="whitespace-nowrap text-[7.5px] font-bold tracking-[.05em] text-white md:text-[9px]">NUSANTARA</div>
+     <div className="mt-1 whitespace-nowrap text-[5.5px] font-semibold uppercase tracking-[.13em] text-cyan md:text-[7px]">Your Trusted Business Partner</div>
     </div>
    </Link>
-   <nav className="hidden xl:flex items-center gap-4">{NAV_LINKS.map(l=><Link key={l.href} href={l.href} className="text-nav relative group whitespace-nowrap text-navy">{lang==="id"?l.id:l.en}<span className="absolute -bottom-1 left-0 h-px w-0 bg-electric transition-all duration-300 group-hover:w-full"/></Link>)}</nav>
-   <div className="hidden xl:flex items-center gap-3"><LanguageToggle light/><Button href="/rfq" variant="primary">{cta}</Button></div>
-   <div className="xl:hidden flex shrink-0 items-center gap-1.5"><LanguageToggle light/><button onClick={()=>setMenuOpen(v=>!v)} className="flex h-10 w-10 items-center justify-center text-navy" aria-label={menuOpen?(lang==="id"?"Tutup menu":"Close menu"):(lang==="id"?"Buka menu":"Open menu")} aria-expanded={menuOpen}>{menuOpen?<X size={24}/>:<MenuIcon size={24}/>}</button></div>
+   <nav className="hidden xl:flex items-center gap-6 text-[13px] font-medium">
+    <Link href="/" className="transition hover:text-cyan">{label("Home","Beranda")}</Link>
+    <div className="group relative"><button className="flex items-center gap-1.5 py-7 transition hover:text-cyan" aria-haspopup="true">{label("Company","Perusahaan")}<ChevronDown size={14}/></button><div className="invisible absolute left-1/2 top-[68px] w-56 -translate-x-1/2 translate-y-2 border border-white/10 bg-[#08263d]/98 p-2 opacity-0 shadow-2xl backdrop-blur-xl transition duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100"><Link href="/company" className="block rounded-md px-4 py-3 text-white/80 hover:bg-white/10 hover:text-white">{label("About GEGA","Tentang GEGA")}</Link><Link href="/company#vision" className="block rounded-md px-4 py-3 text-white/80 hover:bg-white/10 hover:text-white">{label("Vision & Mission","Visi & Misi")}</Link><Link href="/company#sinergi" className="block rounded-md px-4 py-3 text-white/80 hover:bg-white/10 hover:text-white">SINERGI</Link></div></div>
+    <div className="group relative"><button className="flex items-center gap-1.5 py-7 transition hover:text-cyan" aria-haspopup="true">{label("Capabilities","Kapabilitas")}<ChevronDown size={14}/></button><div className="invisible absolute left-1/2 top-[68px] w-72 -translate-x-1/2 translate-y-2 border border-white/10 bg-[#08263d]/98 p-2 opacity-0 shadow-2xl backdrop-blur-xl transition duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100"><Link href="/capabilities" className="mb-1 block rounded-md px-4 py-3 font-semibold text-cyan hover:bg-white/10">{label("View All Capabilities","Lihat Semua Kapabilitas")}</Link>{CAPABILITIES.map(x=><Link key={x.href} href={x.href} className="block rounded-md px-4 py-2.5 text-white/80 hover:bg-white/10 hover:text-white">{label(x.en,x.id)}</Link>)}</div></div>
+    <Link href="/partnership" className="transition hover:text-cyan">{label("Partnership","Kemitraan")}</Link>
+   </nav>
+   <div className="hidden xl:flex items-center gap-3"><LanguageToggle/><Link href="/rfq" className="rounded-md bg-cyan px-5 py-3 text-[12px] font-bold tracking-[.04em] text-[#061f33] transition hover:bg-white">{label("Submit RFQ","Ajukan RFQ")}</Link></div>
+   <div className="xl:hidden flex shrink-0 items-center gap-1.5"><LanguageToggle/><button onClick={()=>setMenuOpen(v=>!v)} className="flex h-10 w-10 items-center justify-center text-white" aria-label={menuOpen?label("Close menu","Tutup menu"):label("Open menu","Buka menu")} aria-expanded={menuOpen}>{menuOpen?<X size={24}/>:<MenuIcon size={24}/>}</button></div>
   </Container>
-  <div className={`xl:hidden fixed inset-x-0 top-[72px] md:top-20 bottom-0 z-[60] overflow-y-auto bg-white shadow-xl transition-transform duration-300 ease-out ${menuOpen?"translate-x-0":"translate-x-full"}`}><nav className="min-h-full bg-white flex flex-col px-6 pt-8 pb-10 gap-1">{NAV_LINKS.map(l=><Link key={l.href} href={l.href} onClick={()=>setMenuOpen(false)} className="text-navy text-xl font-medium py-4 border-b border-mist">{lang==="id"?l.id:l.en}</Link>)}<Button href="/rfq" onClick={()=>setMenuOpen(false)} className="mt-8 w-full">{cta}</Button></nav></div>
+  <div className={`xl:hidden fixed inset-x-0 top-[72px] md:top-20 bottom-0 z-[60] overflow-y-auto bg-[#061f33] transition-transform duration-300 ${menuOpen?"translate-x-0":"translate-x-full"}`}><nav className="flex min-h-full flex-col px-6 py-7"><Link href="/" onClick={()=>setMenuOpen(false)} className="border-b border-white/10 py-4 text-lg">{label("Home","Beranda")}</Link><Link href="/company" onClick={()=>setMenuOpen(false)} className="border-b border-white/10 py-4 text-lg">{label("Company","Perusahaan")}</Link><div className="border-b border-white/10 py-4"><div className="mb-3 text-lg">{label("Capabilities","Kapabilitas")}</div><div className="ml-3 flex flex-col gap-1">{CAPABILITIES.map(x=><Link key={x.href} href={x.href} onClick={()=>setMenuOpen(false)} className="py-2.5 text-sm text-white/70">{label(x.en,x.id)}</Link>)}</div></div><Link href="/partnership" onClick={()=>setMenuOpen(false)} className="border-b border-white/10 py-4 text-lg">{label("Partnership","Kemitraan")}</Link><Link href="/rfq" onClick={()=>setMenuOpen(false)} className="mt-8 rounded-md bg-cyan px-5 py-4 text-center font-bold text-[#061f33]">{label("Submit RFQ","Ajukan RFQ")}</Link></nav></div>
  </header>
 }
