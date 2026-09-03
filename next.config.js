@@ -1,61 +1,31 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  images: {
-    formats: ["image/avif", "image/webp"],
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-      },
-    ],
-  },
-
-  // Redirect old page structure to their equivalent in the current
-  // structure, so previously indexed URLs and any existing inbound/
-  // bookmarked links don't 404. Two generations of restructuring are
-  // covered here: v8.1.8 (About/Projects/Contact + removed Industries/
-  // Sertifikasi/Capabilities/Insights) and v8.2.1 (renamed to the
-  // Services/Our Work/Client Impact/Company/Work With Us structure).
-  async redirects() {
-    return [
-      // v8.2.1 renames
-      { source: "/about", destination: "/company", permanent: true },
-      { source: "/projects", destination: "/our-work", permanent: true },
-      { source: "/projects/:slug", destination: "/our-work/:slug", permanent: true },
-      { source: "/contact", destination: "/work-with-us", permanent: true },
-
-      // v8.1.8 removals (services now exists again as a real page —
-      // deliberately NOT redirected)
-      { source: "/industries", destination: "/company", permanent: true },
-      { source: "/industries/:slug", destination: "/company", permanent: true },
-      { source: "/sertifikasi", destination: "/company", permanent: true },
-      { source: "/capabilities", destination: "/company", permanent: true },
-      { source: "/insights", destination: "/", permanent: true },
-      { source: "/insights/:slug", destination: "/", permanent: true },
-    ];
-  },
-
-  async headers() {
-    return [
-      {
-        source: "/:path*",
-        headers: [
-          {
-            key: "X-Content-Type-Options",
-            value: "nosniff",
-          },
-          {
-            key: "Referrer-Policy",
-            value: "strict-origin-when-cross-origin",
-          },
-          {
-            key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=()",
-          },
-        ],
-      },
-    ];
-  },
+const nextConfig={
+ images:{formats:["image/avif","image/webp"],remotePatterns:[{protocol:"https",hostname:"images.unsplash.com"}]},
+ async redirects(){return[
+  {source:"/about",destination:"/company",permanent:true},
+  {source:"/projects",destination:"/capabilities",permanent:true},
+  {source:"/projects/:slug",destination:"/capabilities",permanent:true},
+  {source:"/our-work",destination:"/capabilities",permanent:true},
+  {source:"/our-work/:slug",destination:"/capabilities",permanent:true},
+  {source:"/client-impact",destination:"/company",permanent:true},
+  {source:"/contact",destination:"/rfq",permanent:true},
+  {source:"/work-with-us",destination:"/partnership",permanent:true},
+  {source:"/services/supply",destination:"/general-supply-trading",permanent:true},
+  {source:"/services/trading",destination:"/general-supply-trading",permanent:true},
+  {source:"/services/construction",destination:"/construction",permanent:true},
+  {source:"/services",destination:"/capabilities",permanent:true},
+  {source:"/industries",destination:"/capabilities",permanent:true},
+  {source:"/industries/:slug",destination:"/capabilities",permanent:true},
+  {source:"/sertifikasi",destination:"/company",permanent:true},
+  {source:"/insights",destination:"/",permanent:true},
+  {source:"/insights/:slug",destination:"/",permanent:true},
+ ]},
+ async headers(){return[{source:"/:path*",headers:[
+  {key:"X-Content-Type-Options",value:"nosniff"},
+  {key:"Referrer-Policy",value:"strict-origin-when-cross-origin"},
+  {key:"Permissions-Policy",value:"camera=(), microphone=(), geolocation=()"},
+  {key:"X-Frame-Options",value:"SAMEORIGIN"},
+  {key:"Cross-Origin-Opener-Policy",value:"same-origin-allow-popups"},
+ ]}]}
 };
-
-module.exports = nextConfig;
+module.exports=nextConfig;
