@@ -1,41 +1,5 @@
-import { Navbar } from "@/components/layout/Navbar";
-import { Hero } from "@/components/layout/Hero";
-import { ValueProposition } from "@/components/layout/ValueProposition";
-import { Services } from "@/components/layout/Services";
-import { HowWeWork } from "@/components/layout/HowWeWork";
-import { CapabilityBand } from "@/components/layout/CapabilityBand";
-import { PartnerStatement } from "@/components/layout/PartnerStatement";
-import { FinalCTA } from "@/components/layout/FinalCTA";
-import { Footer } from "@/components/layout/Footer";
-import { StatBand } from "@/components/ui/StatBand";
+import {Navbar} from "@/components/layout/Navbar";
+import {Footer} from "@/components/layout/Footer";
+import {HomeRedesign} from "@/components/home/HomeRedesign";
 
-const HOME_STATS = [
-  { value: "B2B", labelEn: "procurement and project-based supply for business requirements", labelId: "pengadaan dan supply berbasis proyek untuk kebutuhan bisnis" },
-  { value: "Private", labelEn: "commercial opportunities and direct corporate requirements", labelId: "peluang komersial dan kebutuhan langsung perusahaan swasta" },
-  { value: "Public", labelEn: "government and public-sector procurement opportunities where requirements and eligibility can be met", labelId: "peluang pengadaan pemerintah dan sektor publik sesuai persyaratan dan kelayakan" },
-  { value: "Project", labelEn: "sourcing, costing, procurement, delivery and execution coordinated around each project", labelId: "sourcing, costing, procurement, delivery dan eksekusi yang dikoordinasikan per proyek" },
-];
-
-export default function HomePage() {
-  return (
-    <main>
-      <Navbar />
-      <Hero />
-      <StatBand
-        stats={HOME_STATS}
-        dark
-        cards
-        linkHref="/client-impact"
-        linkEn="See how GCN manages client outcomes →"
-        linkId="Lihat bagaimana GCN mengelola hasil untuk klien →"
-      />
-      <ValueProposition />
-      <Services />
-      <HowWeWork />
-      <CapabilityBand />
-      <PartnerStatement />
-      <FinalCTA />
-      <Footer />
-    </main>
-  );
-}
+export default function HomePage(){return <main><Navbar/><HomeRedesign/><Footer/></main>}
