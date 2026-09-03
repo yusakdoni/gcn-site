@@ -7,7 +7,7 @@ import {Footer} from "@/components/layout/Footer";
 import {Container} from "@/components/ui/Container";
 import {T} from "@/components/i18n/T";
 
-export const metadata:Metadata={title:"Tentang GEGA | PT Gega Cahaya Nusantara",description:"Tentang PT Gega Cahaya Nusantara, purpose, vision, mission, SINERGI corporate values dan pendekatan procurement, supply serta project execution.",alternates:{canonical:"https://gcnusantara.com/company"}};
+export const metadata:Metadata={title:"Tentang GEGA | PT Gega Cahaya Nusantara",description:"Tentang PT Gega Cahaya Nusantara, purpose, vision, mission, SINERGI corporate values dan pendekatan procurement, supply serta project execution.",alternates:{canonical:"https://www.gcnusantara.com/company"}};
 const sinergi=[
  ["S","Solutif","Memahami kebutuhan dan menghadirkan solusi yang tepat, realistis, dan bernilai."],
  ["I","Integritas","Jujur, transparan, etis, dan menjaga kepercayaan dalam setiap hubungan dan transaksi."],
