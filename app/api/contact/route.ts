@@ -2,6 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { SALES_TO, SALES_CC } from "@/lib/mail-recipients";
 
+const LIMITS = {
+  name: 120,
+  email: 254,
+  company: 180,
+  subject: 180,
+  message: 5000,
+  sourcePage: 500,
+};
+
+function clean(value: unknown, max: number) {
+  return String(value ?? "").replace(/\u0000/g, "").trim().slice(0, max);
+}
+
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
 
@@ -9,32 +22,26 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
 
-  // Honeypot anti-bot — field tersembunyi, kalau terisi berarti bot.
-  const honeypot = String(body.hp_ref_note ?? "").trim();
+  const honeypot = clean(body.hp_ref_note, 200);
   if (honeypot !== "") {
-    // Logged deliberately (unlike a real spam-bot response, which stays
-    // silent) so this is diagnosable from Vercel Function Logs — a
-    // legitimate visitor should never trip this. If real submissions keep
-    // landing here, the honeypot itself needs rethinking (e.g. dropped in
-    // favor of a time-based check), not just another field rename.
-    console.warn(
-      "Contact form: honeypot field was non-empty, treating as spam and skipping send.",
-      { honeypotLength: honeypot.length, honeypotPreview: honeypot.slice(0, 40) }
-    );
+    console.warn("Contact form honeypot triggered", { honeypotLength: honeypot.length });
     return NextResponse.json({ ok: true });
   }
 
-  const name = String(body.name ?? "").trim();
-  const email = String(body.email ?? "").trim();
-  const company = String(body.company ?? "").trim();
-  const subject = String(body.subject ?? "").trim();
-  const message = String(body.message ?? "").trim();
+  const name = clean(body.name, LIMITS.name);
+  const email = clean(body.email, LIMITS.email);
+  const company = clean(body.company, LIMITS.company);
+  const subject = clean(body.subject, LIMITS.subject);
+  const message = clean(body.message, LIMITS.message);
+  const sourcePage = clean(body.sourcePage, LIMITS.sourcePage) || "unknown";
+  const consent = String(body.consent ?? "");
 
   if (!name || !email || !subject || !message) {
-    return NextResponse.json(
-      { error: "Missing required fields" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+  }
+
+  if (consent !== "on") {
+    return NextResponse.json({ error: "Consent is required" }, { status: 400 });
   }
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -44,20 +51,14 @@ export async function POST(req: NextRequest) {
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    console.error(
-      "RESEND_API_KEY is not set — cannot send contact email. Set it in Vercel Project Settings > Environment Variables."
-    );
-    return NextResponse.json(
-      { error: "Email service not configured" },
-      { status: 500 }
-    );
+    console.error("RESEND_API_KEY is not set — cannot send contact email.");
+    return NextResponse.json({ error: "Email service not configured" }, { status: 500 });
   }
 
   const resend = new Resend(apiKey);
 
   try {
     const result = await resend.emails.send({
-      // Domain pengirim harus sudah diverifikasi di Resend (lihat catatan setup).
       from: "GCN Website <no-reply@gcnusantara.com>",
       to: SALES_TO,
       cc: SALES_CC,
@@ -67,30 +68,23 @@ export async function POST(req: NextRequest) {
         `Nama: ${name}`,
         `Email: ${email}`,
         `Perusahaan: ${company || "-"}`,
+        `Source: ${sourcePage}`,
+        `Submitted: ${new Date().toISOString()}`,
+        "Consent: accepted",
         "",
         "Pesan:",
         message,
       ].join("\n"),
     });
 
-    // The Resend SDK does NOT throw on API-level rejections (invalid
-    // sender domain, bad recipient, rate limit, etc.) — it returns
-    // { data, error } instead. Without this check, a rejected email
-    // would still report "sent successfully" to the visitor.
     if (result.error) {
       console.error("Resend rejected contact email:", result.error);
-      return NextResponse.json(
-        { error: "Failed to send email" },
-        { status: 502 }
-      );
+      return NextResponse.json({ error: "Failed to send email" }, { status: 502 });
     }
 
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("Failed to send contact email:", err);
-    return NextResponse.json(
-      { error: "Failed to send email" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
   }
 }
