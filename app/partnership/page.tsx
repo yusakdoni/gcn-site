@@ -5,7 +5,7 @@ import {Navbar} from "@/components/layout/Navbar";
 import {Footer} from "@/components/layout/Footer";
 import {Container} from "@/components/ui/Container";
 import {ContactForm} from "@/components/forms/ContactForm";
-export const metadata:Metadata={title:"Vendor & Business Partnership",description:"GEGA partnership for suppliers, vendors, subcontractors, specialist providers, logistics partners and business partners.",alternates:{canonical:"https://gcnusantara.com/partnership"}};
+export const metadata:Metadata={title:"Vendor & Business Partnership",description:"GEGA partnership for suppliers, vendors, subcontractors, specialist providers, logistics partners and business partners.",alternates:{canonical:"https://www.gcnusantara.com/partnership"}};
 const types=[
  [Handshake,"Supplier / Vendor","Produk, material, equipment, atau capability supply yang relevan dengan kebutuhan customer."],
  [ShieldCheck,"Specialist Provider","Kemampuan teknis atau layanan spesialis yang dapat mendukung kebutuhan proyek."],
