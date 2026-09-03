@@ -1,160 +1,39 @@
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
-import { Container } from "@/components/ui/Container";
-import { SectionHeader } from "@/components/ui/SectionHeader";
-import { PageHero } from "@/components/ui/PageHero";
-import { PageCTA } from "@/components/ui/PageCTA";
-import { PHOTOS } from "@/lib/data/photos";
+import type {Metadata} from "next";
 import Image from "next/image";
-import { T } from "@/components/i18n/T";
-import { INDUSTRIES } from "@/lib/data/industries";
-import { INDUSTRIES_ID } from "@/lib/i18n/data-id";
+import Link from "next/link";
+import {ArrowRight,Globe2,Network,Orbit,Sparkles} from "lucide-react";
+import {Navbar} from "@/components/layout/Navbar";
+import {Footer} from "@/components/layout/Footer";
+import {Container} from "@/components/ui/Container";
+import {T} from "@/components/i18n/T";
 
-const VALUES = [
-  {en:["Integrity","Clear and responsible business practices."],id:["Integritas","Praktik bisnis yang jelas dan bertanggung jawab."]},
-  {en:["Reliability","Dependable sourcing, communication and execution."],id:["Keandalan","Pengadaan, komunikasi dan eksekusi yang dapat diandalkan."]},
-  {en:["Responsiveness","We adapt the scope to the client's actual requirement."],id:["Responsif","Kami menyesuaikan ruang lingkup dengan kebutuhan aktual klien."]},
-  {en:["Quality","Specification, documentation and delivery discipline."],id:["Kualitas","Disiplin spesifikasi, dokumentasi dan pengiriman."]},
-  {en:["Partnership","Long-term relationships with clients and supply partners."],id:["Kemitraan","Hubungan jangka panjang dengan klien dan mitra supply."]},
+export const metadata:Metadata={title:"Tentang GEGA | PT Gega Cahaya Nusantara",description:"Tentang PT Gega Cahaya Nusantara, purpose, vision, mission, SINERGI corporate values dan pendekatan procurement, supply serta project execution.",alternates:{canonical:"https://gcnusantara.com/company"}};
+const sinergi=[
+ ["S","Solutif","Memahami kebutuhan dan menghadirkan solusi yang tepat, realistis, dan bernilai."],
+ ["I","Integritas","Jujur, transparan, etis, dan menjaga kepercayaan dalam setiap hubungan dan transaksi."],
+ ["N","Nilai Berkelanjutan","Menciptakan hasil yang sehat bagi pelanggan, GEGA, dan mitra untuk hubungan bisnis jangka panjang."],
+ ["E","Eksekusi Unggul","Menjalankan setiap pekerjaan dengan kualitas, ketepatan, kontrol, dan tanggung jawab."],
+ ["R","Responsif","Cepat memahami kebutuhan, memberikan kepastian, dan menyelesaikan masalah."],
+ ["G","Gesit","Adaptif dan cepat mengambil tindakan tanpa mengorbankan kualitas, compliance, atau kontrol."],
+ ["I","Inovatif","Memanfaatkan teknologi, data, dan cara kerja baru untuk meningkatkan kualitas layanan dan pengambilan keputusan."],
 ];
+const missions=[
+ "Memahami kebutuhan pelanggan dan menghadirkan solusi yang tepat, realistis, kompetitif, dan dapat diandalkan.",
+ "Membangun jaringan supplier, vendor, subcontractor, dan partner yang kuat untuk meningkatkan kemampuan dan jangkauan GEGA.",
+ "Menjalankan procurement dan project secara profesional, cepat, berkualitas, etis, dan dapat dipertanggungjawabkan.",
+ "Menumbuhkan bisnis secara sehat dengan menjaga profitability, cashflow, risiko, dan keberlanjutan hubungan bisnis.",
+ "Memanfaatkan teknologi, data, automation, dan AI untuk meningkatkan kontrol, efisiensi, serta kualitas pengambilan keputusan.",
+];
+export default function CompanyPage(){return <main><Navbar/>
+ <section className="relative min-h-[620px] overflow-hidden bg-[#041827] pt-[72px] text-white md:pt-20"><Image src="/assets/generated/project-building-material-001.jpg" alt="Representational procurement and supply environment" fill priority sizes="100vw" className="object-cover opacity-[.24]"/><div className="absolute inset-0 bg-gradient-to-r from-[#041827] via-[#041827]/95 to-[#041827]/55"/><Container className="relative flex min-h-[548px] items-end pb-16 pt-24 md:pb-20"><div className="max-w-3xl"><div className="text-[11px] font-semibold uppercase tracking-[.17em] text-cyan">PT Gega Cahaya Nusantara</div><h1 className="mt-5 text-5xl font-semibold tracking-[-.045em] text-white md:text-7xl"><T en="Connecting requirements with the right capabilities." id="Menghubungkan kebutuhan dengan kemampuan yang tepat."/></h1><p className="mt-6 max-w-2xl text-[17px] leading-8 text-white/70"><T en="GEGA is a project-based B2B procurement, sourcing, supply and execution company built around collaboration, commercial discipline and accountable delivery." id="GEGA adalah perusahaan B2B berbasis proyek yang bergerak dalam procurement, sourcing, supply, dan eksekusi dengan fondasi kolaborasi, disiplin komersial, serta delivery yang dapat dipertanggungjawabkan."/></p></div></Container></section>
 
-export const metadata = {
-  title: "Our Company",
-  description: "PT Gega Cahaya Nusantara (GCN) — supplier and general trading partner for Supply, Trading & Construction requirements across Indonesia, including aviation, medical, chemical, machinery and construction supply.",
-};
+ <section className="bg-white py-20 md:py-28"><Container><div className="grid gap-12 lg:grid-cols-2"><div><div className="section-kicker">Corporate Purpose</div><h2 className="mt-4 text-3xl font-semibold tracking-[-.03em] text-navy md:text-5xl">Untuk apa GEGA ada?</h2></div><div><blockquote className="text-2xl font-medium leading-10 tracking-[-.02em] text-navy">“Menghubungkan kebutuhan bisnis dengan solusi, mitra, dan eksekusi yang tepat untuk menciptakan nilai yang dapat dipercaya dan berkelanjutan.”</blockquote><p className="mt-7 text-[15px] leading-7 text-navy/62">GEGA tidak dibangun hanya untuk menyelesaikan transaksi. Nilai yang dicari adalah kebutuhan customer yang terselesaikan, bisnis yang sehat secara komersial, dokumentasi yang jelas, dan hubungan yang layak dilanjutkan.</p></div></div></Container></section>
 
-export default function CompanyPage() {
-  return (
-    <main>
-      <Navbar />
+ <section id="vision" className="bg-[#f4f8fa] py-20 md:py-28"><Container><div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr]"><div><div className="section-kicker">Vision</div><h2 className="mt-4 text-3xl font-semibold tracking-[-.03em] text-navy md:text-5xl">Arah pertumbuhan GEGA</h2></div><div><p className="text-2xl font-medium leading-10 text-navy">Menjadi perusahaan nasional terpercaya yang menghubungkan kebutuhan bisnis dengan solusi, jaringan, dan eksekusi unggul secara berkelanjutan.</p><div className="mt-12 text-[11px] font-semibold uppercase tracking-[.16em] text-corporate">Mission</div><div className="mt-5 grid gap-3">{missions.map((m,i)=><div key={m} className="grid grid-cols-[42px_1fr] gap-4 rounded-xl border border-navy/10 bg-white p-5"><div className="text-sm font-bold text-cyan">0{i+1}</div><p className="text-sm leading-6 text-navy/70">{m}</p></div>)}</div></div></div></Container></section>
 
-      <PageHero
-        eyebrow={<T en="Our Company" id="Perusahaan Kami"/>}
-        title={<T en="A practical partner for Supply, Trading & Construction." id="Mitra praktis untuk Supply, Trading & Konstruksi."/>}
-        description={
-          <T
-            en="PT Gega Cahaya Nusantara supports organizations with product supply, wholesale trading and construction execution. For specialized requirements, we start from the client's specification rather than publishing a premature fixed catalog."
-            id="PT Gega Cahaya Nusantara mendukung berbagai organisasi melalui supply produk, perdagangan grosir dan pelaksanaan konstruksi. Untuk kebutuhan khusus, kami memulai dari spesifikasi klien, bukan menerbitkan katalog tetap yang prematur."
-          />
-        }
-        photo={PHOTOS.hero}
-      />
+ <section id="sinergi" className="relative overflow-hidden bg-[#061f33] py-20 text-white md:py-28"><div className="sinergi-orbit sinergi-orbit-one"/><div className="sinergi-orbit sinergi-orbit-two"/><Container className="relative"><div className="mx-auto max-w-3xl text-center"><div className="text-[11px] font-semibold uppercase tracking-[.18em] text-cyan">Corporate Values</div><h2 className="mt-5 text-5xl font-semibold tracking-[.08em] text-white md:text-7xl">SINERGI</h2><p className="mt-5 text-[17px] leading-8 text-white/65">SINERGI adalah cara GEGA menciptakan nilai melalui kepercayaan, kolaborasi, dan eksekusi.</p></div><div className="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-7">{sinergi.map((v,i)=><div key={`${v[0]}-${i}`} className="rounded-2xl border border-white/12 bg-white/[.055] p-5 backdrop-blur-sm transition hover:-translate-y-1 hover:border-cyan/45 hover:bg-white/[.09]"><div className="flex h-11 w-11 items-center justify-center rounded-full border border-cyan/35 bg-cyan/10 text-xl font-bold text-cyan">{v[0]}</div><h3 className="mt-5 text-sm font-semibold text-white">{v[1]}</h3><p className="mt-3 text-xs leading-5 text-white/58">{v[2]}</p></div>)}</div><p className="mt-10 text-center text-sm font-semibold text-white/65">SINERGI adalah cara GEGA bekerja.</p></Container></section>
 
-      {/* OUR STRUCTURE */}
-      <section className="py-20 bg-white">
-        <Container className="grid md:grid-cols-2 gap-16">
-          <div>
-            <SectionHeader
-              eyebrow={<T en="Our Structure" id="Struktur Kami"/>}
-              title={<T en="Supply. Trading. Construction." id="Supply. Trading. Konstruksi."/>}
-            />
+ <section className="bg-white py-20 md:py-28"><Container><div className="grid gap-12 lg:grid-cols-[.75fr_1.25fr]"><div><div className="section-kicker">Brand Philosophy</div><h2 className="mt-4 text-3xl font-semibold tracking-[-.03em] text-navy md:text-5xl">Identitas yang terhubung dengan cara kerja.</h2></div><div className="grid gap-px overflow-hidden rounded-2xl border border-navy/10 bg-navy/10 sm:grid-cols-2"><div className="bg-[#f8fafb] p-7"><Globe2 className="text-corporate"/><h3 className="mt-5 text-lg font-semibold text-navy">Globe & Nusantara</h3><p className="mt-3 text-sm leading-6 text-navy/62">Jangkauan, konektivitas, dan peluang lintas wilayah.</p></div><div className="bg-[#f8fafb] p-7"><Network className="text-corporate"/><h3 className="mt-5 text-lg font-semibold text-navy">Network Lines</h3><p className="mt-3 text-sm leading-6 text-navy/62">Kolaborasi antara customer, GEGA, supplier, vendor, partner, dan supply chain — esensi dari SINERGI.</p></div><div className="bg-[#f8fafb] p-7"><Orbit className="text-corporate"/><h3 className="mt-5 text-lg font-semibold text-navy">Orbit</h3><p className="mt-3 text-sm leading-6 text-navy/62">Pergerakan, kecepatan, adaptasi, pertumbuhan, dan ekspansi.</p></div><div className="bg-[#f8fafb] p-7"><Sparkles className="text-corporate"/><h3 className="mt-5 text-lg font-semibold text-navy">Blue–Turquoise</h3><p className="mt-3 text-sm leading-6 text-navy/62">Profesionalisme, kepercayaan, stabilitas, dan modernitas.</p></div></div></div></Container></section>
 
-            <p className="text-body text-navy/75 mt-6">
-              <T
-                en="These are the three business pillars used throughout this website. Aviation is presented as a supply and trading market, covering aircraft and non-aircraft requirements according to client needs."
-                id="Ini adalah tiga pilar bisnis yang digunakan di seluruh website ini. Aviation ditampilkan sebagai pasar supply dan trading, mencakup kebutuhan pesawat maupun non-pesawat sesuai kebutuhan klien."
-              />
-            </p>
-          </div>
-
-          <div>
-            <SectionHeader
-              eyebrow={<T en="Our Approach" id="Pendekatan Kami"/>}
-              title={<T en="Requirement first." id="Kebutuhan lebih dulu."/>}
-            />
-
-            <p className="text-body text-navy/75 mt-6">
-              <T
-                en="We clarify specification, quantity, documentation, timing and delivery expectations, then coordinate suitable sourcing or execution partners."
-                id="Kami memperjelas spesifikasi, kuantitas, dokumentasi, waktu dan ekspektasi pengiriman, lalu mengoordinasikan mitra pengadaan atau pelaksanaan yang sesuai."
-              />
-            </p>
-          </div>
-        </Container>
-      </section>
-
-      {/* COMPANY VALUES */}
-      <section className="py-24 bg-offwhite">
-        <Container>
-          <SectionHeader
-            eyebrow={<T en="What We Stand For" id="Yang Kami Junjung"/>}
-            title={<T en="Company Values" id="Nilai Perusahaan"/>}
-            align="center"
-          />
-
-          <div className="grid md:grid-cols-5 gap-px bg-mist mt-16">
-            {VALUES.map((v) => (
-              <div key={v.en[0]} className="bg-white p-6">
-                <h3 className="text-h3 text-lg">
-                  <T en={v.en[0]} id={v.id[0]}/>
-                </h3>
-
-                <p className="text-[14px] text-navy/70 mt-3 leading-relaxed">
-                  <T en={v.en[1]} id={v.id[1]}/>
-                </p>
-              </div>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* INDUSTRIES WE SERVE */}
-      <section className="py-24 bg-white">
-        <Container>
-          <SectionHeader
-            eyebrow={<T en="Industries" id="Industri"/>}
-            title={<T en="Industries we serve" id="Industri yang kami layani"/>}
-          />
-
-          <p className="text-body text-navy/75 mt-6 max-w-2xl">
-            <T
-              en="Our Supply, Trading and Construction capabilities are most relevant across the following industries. Scope for each engagement is shaped around the client's specific, approved requirement."
-              id="Kapabilitas Supply, Trading dan Konstruksi kami paling relevan di industri-industri berikut. Ruang lingkup setiap pekerjaan disesuaikan dengan kebutuhan spesifik klien yang telah disetujui."
-            />
-          </p>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
-            {INDUSTRIES.map((ind) => {
-              const p = PHOTOS[ind.image as keyof typeof PHOTOS];
-              const tr = INDUSTRIES_ID[ind.slug];
-              return (
-                <div key={ind.slug} className="bg-white border border-mist overflow-hidden">
-                  <div className="relative h-44">
-                    <Image
-                      src={p.src}
-                      alt={ind.imageAlt}
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-h3 text-lg">
-                      <T en={ind.title} id={tr?.title || ind.title}/>
-                    </h3>
-                    <p className="text-[14px] text-navy/70 mt-3 leading-relaxed">
-                      <T en={ind.description} id={tr?.description || ind.description}/>
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </Container>
-      </section>
-
-      <PageCTA
-        eyebrow={<T en="Work With Us" id="Kerja Sama"/>}
-        title={<T en="Have a requirement in mind? Let's talk about scope, specification and timeline." id="Punya kebutuhan tertentu? Mari bicarakan ruang lingkup, spesifikasi dan waktunya."/>}
-        primaryHref="/work-with-us"
-        primaryEn="Get in touch"
-        primaryId="Hubungi kami"
-        secondaryHref="/services"
-        secondaryEn="See our services"
-        secondaryId="Lihat layanan kami"
-      />
-
-      <Footer />
-    </main>
-  );
-}
+ <section className="bg-[#edf5f7] py-16 md:py-20"><Container><div className="flex flex-col items-start justify-between gap-7 md:flex-row md:items-center"><div><div className="text-[11px] font-semibold uppercase tracking-[.16em] text-corporate">Your Trusted Business Partner</div><h2 className="mt-3 text-3xl font-semibold tracking-[-.03em] text-navy">Menghubungkan Kebutuhan. Mewujudkan Nilai.</h2></div><Link href="/rfq" className="inline-flex items-center gap-2 rounded-md bg-[#061f33] px-6 py-4 text-sm font-semibold text-white hover:bg-corporate">Ajukan RFQ<ArrowRight size={16}/></Link></div></Container></section>
+ <Footer/></main>}
