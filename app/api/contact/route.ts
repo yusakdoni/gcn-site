@@ -22,12 +22,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
 
-  const honeypot = clean(body.hp_ref_note, 200);
-  if (honeypot !== "") {
-    console.warn("Contact form honeypot triggered", { honeypotLength: honeypot.length });
-    return NextResponse.json({ ok: true });
-  }
-
   const name = clean(body.name, LIMITS.name);
   const email = clean(body.email, LIMITS.email);
   const company = clean(body.company, LIMITS.company);
@@ -35,6 +29,7 @@ export async function POST(req: NextRequest) {
   const message = clean(body.message, LIMITS.message);
   const sourcePage = clean(body.sourcePage, LIMITS.sourcePage) || "unknown";
   const consent = String(body.consent ?? "");
+  const formStartedAt = Number(body.formStartedAt ?? 0);
 
   if (!name || !email || !subject || !message) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -49,6 +44,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Invalid email" }, { status: 400 });
   }
 
+  // Lightweight anti-automation check that cannot be populated by browser autofill.
+  // Do not silently return success for rejected human-looking submissions.
+  if (formStartedAt > 0) {
+    const elapsed = Date.now() - formStartedAt;
+    if (elapsed >= 0 && elapsed < 900) {
+      return NextResponse.json({ error: "Submission too fast" }, { status: 429 });
+    }
+  }
+
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     console.error("RESEND_API_KEY is not set — cannot send contact email.");
@@ -56,6 +60,10 @@ export async function POST(req: NextRequest) {
   }
 
   const resend = new Resend(apiKey);
+  const isPartnership = sourcePage.startsWith("/partnership");
+  const emailSubject = isPartnership
+    ? `[NEW PARTNERSHIP ENQUIRY] ${company || name} — ${subject}`
+    : `[GCN Contact] ${subject}`;
 
   try {
     const result = await resend.emails.send({
@@ -63,17 +71,24 @@ export async function POST(req: NextRequest) {
       to: SALES_TO,
       cc: SALES_CC,
       replyTo: email,
-      subject: `[GCN Contact] ${subject}`,
+      subject: emailSubject,
       text: [
+        isPartnership ? "NEW WEBSITE PARTNERSHIP / VENDOR ENQUIRY" : "NEW WEBSITE CONTACT",
+        "",
         `Nama: ${name}`,
         `Email: ${email}`,
         `Perusahaan: ${company || "-"}`,
+        `Subjek: ${subject}`,
         `Source: ${sourcePage}`,
         `Submitted: ${new Date().toISOString()}`,
         "Consent: accepted",
         "",
         "Pesan:",
         message,
+        "",
+        isPartnership
+          ? "Recommended next action: review company/capability → classify supplier/vendor/partner → follow up if relevant."
+          : "Recommended next action: qualify request and follow up.",
       ].join("\n"),
     });
 
@@ -82,7 +97,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Failed to send email" }, { status: 502 });
     }
 
-    return NextResponse.json({ ok: true });
+    console.info("Contact email sent", {
+      sourcePage,
+      type: isPartnership ? "partnership" : "contact",
+      resendId: result.data?.id ?? null,
+    });
+
+    return NextResponse.json({ ok: true, type: isPartnership ? "partnership" : "contact" });
   } catch (err) {
     console.error("Failed to send contact email:", err);
     return NextResponse.json({ error: "Failed to send email" }, { status: 500 });
